@@ -1,0 +1,30 @@
+Collection =
+' Коллекция элементов (абстракция)
+
+
+
+
+
+Massive(Collection) =
+' Упорядоченный набор одинаковых элементов
+
+alloc(n) = so malloc.h malloc n * a class size
+' При создании нового объекта вызывается alloc, если она есть в классе
+
+free = so malloc.h free a
+
+at(i) = `a[i]`
+
+at(i put j) = `a[i] = j`: a
+
+
+Vector(Collection) =
+' Cостоит из блоков
+
+
+Slice(Collection) =
+' Содержит интервалы в коллекции
+
+
+
+
