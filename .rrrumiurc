@@ -1,0 +1,59 @@
+# конфигурационный файл miu
+
+# каталог с файлами miu
+# default: miu
+miu_dir		= man
+
+# главная каталог для создаваемых файлов
+# default: .miu
+out_dir		= .miu
+
+# каталог куда будут выложены статьи в формате markdown
+# default: $out_dir/mark
+article_dir	= mark
+
+# каталог куда будут выложены файлы `@@ ...`
+# default: $out_dir/lib
+lib_dir		= .miu/lib
+
+# каталог для выкладывания тестов
+# default: $out_dir/t
+t_dir		= t
+
+# каталог которая будет текущей при выполнении тестов
+# default: $lib_dir
+run_dir		= .
+
+# каталоги c модулями через запятую для perl-тестов
+# default: $lib_dir
+include_dirs= .miu/lib,lib
+
+# каталог для логов
+# default: $out_dir/log
+log_dir     = .miu/logs
+
+# отключить покрытие
+# default: 0
+uncover     = 0
+
+# каталог для покрытия
+# default: $out_dir/cover_db
+cover_dir   = .miu/cover_db
+
+# задаёт из какого файла miu сделать README.md
+# если не указан - не создаётся
+readme		= 02-issa-basic.man
+
+# создавать ссылки на остальные статьи (0 - не создавать, 1 - в конце readme)
+# default: 1
+menu        = 1
+
+# создавать оглавление статьи
+# default: 1
+submenu     = 1
+
+# репортёр. Список репортёров см. в lib/Miu/Reporter/*.pm
+reporter	= list
+
+# путь к броузеру для [jsb]-тестов
+browser		= 
