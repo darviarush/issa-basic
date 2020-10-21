@@ -7,6 +7,8 @@ extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
 
+
+
 void yyerror(const char* s);
 %}
 
