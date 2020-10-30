@@ -9,10 +9,6 @@ extern FILE* yyin;
 
 void yyerror(const char* s);
 
-struct {
-    
-};
-
 %}
 
 %union {
@@ -27,8 +23,7 @@ struct {
 %left "+" "-"
 %left "*" "/"
 
-%type<ival> expression
-%type<fval> mixed_expression
+%type<sval> mixed_expression
 
 %start calculation
 
@@ -43,14 +38,15 @@ line: "\n"
     | T_QUIT "\n" { printf("bye!\n"); exit(0); }
 ;
 
-mixed_expression: 
+mixed_expression:
         mixed_expression "+" mixed_expression	{ $$ = $1 + $3; }
       | mixed_expression "-" mixed_expression	{ $$ = $1 - $3; }
-      | mixed_expression "*" mixed_expression 	{ $$ = $1 * $3; }
+      | mixed_expression "*" mixed_expression	{ $$ = $1 * $3; }
       | mixed_expression "/" mixed_expression	{ $$ = $1 / $3; }
       | "(" mixed_expression ")"		{ $$ = $2; }
-      | T_INT { $$ }
-      | T_FLOAT { $$ }
+      | T_VAR { $$ = {type: , s: $1}; }
+      | T_INT { $$ = $1; }
+      | T_FLOAT { $$ = $1; }
 ;
 
 
