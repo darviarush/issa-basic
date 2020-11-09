@@ -9,12 +9,27 @@ extern FILE* yyin;
 
 void yyerror(const char* s);
 
+
+struct VAL {
+    char* type;          // тип выражения
+    int av;              // битовая маска: 0-word, 1-указатель на выражение
+    union {
+        char* word;      // слово
+        struct VAL* arg; // аргумент
+    } args[];
+};
+
+struct VAL* new_val() {
+    
+}
+
 %}
 
 %union {
     int ival;
     double fval;
     char* sval;
+    struct VAL val;
 }
 
 //%token<ival> T_INT
@@ -39,16 +54,15 @@ line: "\n"
 ;
 
 mixed_expression:
-        mixed_expression "+" mixed_expression	{ $$ = $1 + $3; }
-      | mixed_expression "-" mixed_expression	{ $$ = $1 - $3; }
-      | mixed_expression "*" mixed_expression	{ $$ = $1 * $3; }
-      | mixed_expression "/" mixed_expression	{ $$ = $1 / $3; }
-      | "(" mixed_expression ")"		{ $$ = $2; }
-      | T_VAR { $$ = {type: , s: $1}; }
-      | T_INT { $$ = $1; }
-      | T_FLOAT { $$ = $1; }
+        mixed_expression "+" mixed_expression	{ $$ = $1 + $3;
+      | mixed_expression "-" mixed_expression	{ $$ = $1 - $3;
+      | mixed_expression "*" mixed_expression	{ $$ = $1 * $3;
+      | mixed_expression "/" mixed_expression	{ $$ = $1 / $3;
+      | "(" mixed_expression ")"		{ $$ = $2;
+      | T_VAR { $$ = {type: , s: $1};
+      | T_INT { $$ = $1;
+      | T_FLOAT { $$ = $1;
 ;
-
 
 %%
 
