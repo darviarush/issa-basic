@@ -9,17 +9,26 @@ extern FILE* yyin;
 
 void yyerror(const char* s);
 
+union ARG {
+    char* word;           // слово
+    struct VAL* arg;      // аргумент
+};
 
 struct VAL {
     char* type;          // тип выражения
-    int av;              // битовая маска: 0-word, 1-указатель на выражение
-    union {
-        char* word;      // слово
-        struct VAL* arg; // аргумент
-    } args[];
+    int ac:8;            // длина массива
+    int as:24;           // битовая маска: 0-word, 1-указатель на выражение
+    union ARG* args[];   // аргументы согласно битовой маске
 };
 
-struct VAL* new_val() {
+struct VAL* new_val(char* type, int ac, int as, union ARG*) {
+    
+    struct VAL* val = malloc(sizeof(struct VAL) + as*sizeof(union ARG));
+    val->type = type;
+    return val;
+}
+
+struct VAL* word(struct VAL* val, char* word) {
     
 }
 
@@ -54,14 +63,14 @@ line: "\n"
 ;
 
 mixed_expression:
-        mixed_expression "+" mixed_expression	{ $$ = $1 + $3;
-      | mixed_expression "-" mixed_expression	{ $$ = $1 - $3;
-      | mixed_expression "*" mixed_expression	{ $$ = $1 * $3;
-      | mixed_expression "/" mixed_expression	{ $$ = $1 / $3;
-      | "(" mixed_expression ")"		{ $$ = $2;
-      | T_VAR { $$ = {type: , s: $1};
-      | T_INT { $$ = $1;
-      | T_FLOAT { $$ = $1;
+        mixed_expression "+" mixed_expression	{ $$ = $1 + $3; }
+      | mixed_expression "-" mixed_expression	{ $$ = $1 - $3; }
+      | mixed_expression "*" mixed_expression	{ $$ = $1 * $3; }
+      | mixed_expression "/" mixed_expression	{ $$ = $1 / $3; }
+      | "(" mixed_expression ")"		{ $$ = $2; }
+      | T_VAR { $$ = {type: , s: $1}; }
+      | T_INT { $$ = $1; }
+      | T_FLOAT { $$ = $1; }
 ;
 
 %%
