@@ -1,1 +1,5 @@
 theme: jekyll-theme-merlot
+
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
