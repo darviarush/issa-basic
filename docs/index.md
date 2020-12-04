@@ -53,7 +53,7 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 Файл `function.is`
 
-```AutoIt
+```bash
 square(x) = x^2
 cube(x) = square(x) * x
 
