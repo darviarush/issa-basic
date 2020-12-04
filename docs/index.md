@@ -51,7 +51,7 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 ### Функции
 
-Файл `function.is`
+Файл `math_task.is`
 
 ```bash
 square(x) = x^2
@@ -60,27 +60,84 @@ cube(x) = square(x) * x
 print "square(3)="; square(3), "and cube(-2.2)="; cube(-2)
 ```
 
-Файл `function.c`
+Файл `compute_with.c`
 
 ```c
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 
-double square(int32_t x) { return pow(x, 2); }
+double square(double x) { return pow(x, 2); }
 double square(double x) { return square(x) * x; }
 
-void function() {
-	printf("square(3)=%f and cube(-2)=%s\n", square(3), cube(-2));
+void compute_with(double a, double b) {
+	printf("square(3)=%f and cube(-2)=%s\n", square(a), cube(b));
 }
 ```
 
+Файл `function.is`
+
+```bash
+compute 3 with -2
+```
+
+Файл `function.is`
+
 ### Строки
 
-Строки могут помещаться только на одной строке.
+Строки берутся в `""` или `''` кавычки. И могут помещаться только на одной строке.
+Многострочные строки
 
-""
+Файл `get_hello_word.is`
+
+```bash
+w = "Word"
+return """Hello {w}!
+My friends!\n"""
+```
+
+Файл `get_hello_word.c`
+
+```c
+#include <issa-basic/string.h>
+
+struct issa_string get_hello_word() {
+	struct issa_string w = {length: 4, data: "Word"};
+	char* _ref0;
+	int32_t _ref1 = asprintf(*_ref0, "Hello %s!\n"
+		"My friends!\n");
+	return {length: _ref1, data: _ref0};
+}
+```
 
 ### Массивы
 
+Элементы массивов заполняются нулевыми значениями.
+
+Файл `massive.is`
+
+```bash
+DIM e(5, 6, 10), m(2, 2)
+
+v = [1, 2, 3]
+
+print e, v, m 
+```
+
+Файл `massive.c`
+
+```c
+#include <issa-basic/dim.h>
+#include <stdio.h>
+
+void massive() {
+	struct issa_dim3 e = {dim1: 5, dim2: 6, dim3: 10, data: NULL};
+	struct issa_dim1 v = {dim1: 3, data: {1, 2, 3}};
+	struct issa_dim2 v = {dim1: 2, dim2: 2, data: {1, 2, 3}};
+
+	printf("%s %s %s\n", issa_dim3_as_string(e), issa_dim1_as_string(v), issa_dim2_as_string(m));
+}
+```
+
 ### Ассоциативные массивы
+
