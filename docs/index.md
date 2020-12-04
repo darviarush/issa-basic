@@ -93,7 +93,7 @@ compute 3 with -2
 ```bash
 w = "Word"
 return """Hello {w}!
-My friends!\n"""
+	My friends!\n"""
 ```
 
 Файл `get_hello_word.c`
@@ -105,7 +105,7 @@ struct issa_string get_hello_word() {
 	struct issa_string w = {length: 4, data: "Word"};
 	char* _ref0;
 	int32_t _ref1 = asprintf(*_ref0, "Hello %s!\n"
-		"My friends!\n");
+		"	My friends!\n");
 	return {length: _ref1, data: _ref0};
 }
 ```
