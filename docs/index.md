@@ -52,11 +52,7 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 ### Функции
 
-<table>
-	<tr>
-		<td width=50%>
-
-		Файл `function.is`
+Файл `function.is`
 
 ```basic
 square(x) = x^2
@@ -65,8 +61,7 @@ cube(x) = square(x) * x
 print "square(3)="; square(3), "and cube(-2.2)="; cube(-2)
 ```
 
-		</td>
-		<td>
+Файл `function.c`
 
 ```c
 #include <math.h>
@@ -80,7 +75,3 @@ int main(int ac, char** av, char** ev) {
 	printf("square(3)=%f and cube(-2)=%s\n", square(3), cube(-2));
 }
 ```
-
-</td>
-</tr>
-</table>
