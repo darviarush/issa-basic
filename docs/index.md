@@ -54,14 +54,18 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 <table>
 	<tr><td width=50%>
-		Файл a
+
+		Файл `function.is`
+
 ```basic
 square(x) = x^2
 cube(x) = square(x) * x
 
 print "square(3)="; square(3), "and cube(-2.2)="; cube(-2)
 ```
+
 	<td>
+
 ```c
 #include <math.h>
 #include <stdint.h>
@@ -74,4 +78,5 @@ int main(int ac, char** av, char** ev) {
 	printf("square(3)=%f and cube(-2)=%s\n", square(3), cube(-2));
 }
 ```
+
 </table>
