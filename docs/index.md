@@ -53,7 +53,8 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 ### Функции
 
 <table>
-	<tr><td width=50%>
+	<tr>
+		<td width=50%>
 
 		Файл `function.is`
 
@@ -64,7 +65,8 @@ cube(x) = square(x) * x
 print "square(3)="; square(3), "and cube(-2.2)="; cube(-2)
 ```
 
-	<td>
+		</td>
+		<td>
 
 ```c
 #include <math.h>
@@ -79,4 +81,6 @@ int main(int ac, char** av, char** ev) {
 }
 ```
 
+</td>
+</tr>
 </table>
