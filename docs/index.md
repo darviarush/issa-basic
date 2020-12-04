@@ -35,3 +35,43 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 ### Support or Contact
 
 Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+
+
+# issa-basic
+
+
+Это язык программирования на основе языка basic.
+
+## Обзор
+
+## Установка
+
+## Использование
+
+## Справочник
+
+### Функции
+
+<table>
+	<tr><td width=50%>
+		Файл a
+```basic
+square(x) = x^2
+cube(x) = square(x) * x
+
+print "square(3)="; square(3), "and cube(-2.2)="; cube(-2)
+```
+	<td>
+```c
+#include <math.h>
+#include <stdint.h>
+#include <stdio.h>
+
+double square(int32_t x) { return pow(x, 2); }
+double square(double x) { return square(x) * x; }
+
+int main(int ac, char** av, char** ev) {
+	printf("square(3)=%f and cube(-2)=%s\n", square(3), cube(-2));
+}
+```
+</table>
