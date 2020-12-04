@@ -39,7 +39,6 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 # issa-basic
 
-
 Это язык программирования на основе языка basic.
 
 ## Обзор
@@ -54,7 +53,7 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 Файл `function.is`
 
-```basic
+```AutoIt
 square(x) = x^2
 cube(x) = square(x) * x
 
@@ -71,7 +70,7 @@ print "square(3)="; square(3), "and cube(-2.2)="; cube(-2)
 double square(int32_t x) { return pow(x, 2); }
 double square(double x) { return square(x) * x; }
 
-int main(int ac, char** av, char** ev) {
+void function() {
 	printf("square(3)=%f and cube(-2)=%s\n", square(3), cube(-2));
 }
 ```
