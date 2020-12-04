@@ -53,7 +53,7 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 Файл `function.is`
 
-```bash
+```Julia
 square(x) = x^2
 cube(x) = square(x) * x
 
@@ -74,3 +74,13 @@ void function() {
 	printf("square(3)=%f and cube(-2)=%s\n", square(3), cube(-2));
 }
 ```
+
+### Строки
+
+Строки могут помещаться только на одной строке.
+
+""
+
+### Массивы
+
+### Ассоциативные массивы
