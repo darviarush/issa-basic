@@ -1,0 +1,13 @@
+square(x) = x^2
+cube(x) = square(x) * x
+
+print "square(3)="; square(3), "and cube(-2.2)="; cube(-2)
+
+for i=1 to 10 step -1
+	case i in
+	0,1) 
+	*) 
+    esac
+next i
+
+print "Factorial(10) = "; i

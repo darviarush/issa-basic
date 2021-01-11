@@ -9,6 +9,7 @@
 # SINOPSIS
 
 ```ruby
+
 ```
 
 # DESCRIPTION
