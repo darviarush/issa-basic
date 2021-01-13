@@ -1,48 +1,53 @@
 %{
 #define YY_DECL int yylex()
-#define YYSTYPE char*
 
 #include <string.h>
 
+#include "../src/node.h"
 #include "is.tab.h"
 
 
-static void update_loc(){
-  static int curr_line = 1;
-  static int curr_col  = 1;
+int yycolumn = 1;
 
-  yylloc.first_line   = curr_line;
-  yylloc.first_column = curr_col;
+static int new_yylval(int op) {
 
-  {char * s; for(s = yytext; *s != '\0'; s++){
-    if(*s == '\n'){
-      curr_line++;
-      curr_col = 1;
-    }else{
-      curr_col++;
-    }
-  }}
+	//fprintf(stderr, "%i:%i `%s`\n", yylineno, yycolumn, yytext);
 
-  yylloc.last_line   = curr_line;
-  yylloc.last_column = curr_col-1;
+	node n = {
+		first_line   : yylineno,
+		first_column : yycolumn,
+		last_line 	 : yylineno,
+		last_column  : yycolumn + yyleng - 1,
+		text 		 : strdup(yytext),
+		op 			 : op,
+		left		 : NULL,
+		right		 : NULL,
+	};
+	yylval = new_node(&n);
+	yycolumn += yyleng;
+
+	return op;
 }
-
-#define YY_USER_ACTION update_loc();
 
 %}
 %option yylineno
 
-op		"|"|"+"|"-"|"*"|"/"|"^"|"\n"|"="|":"|"("|")"
+op		"|"|"+"|"-"|"*"|"/"|"^"|"="|":"|"("|")"
 
-num		-?\d+\.\d+
+num		[0-9]+\.[0-9]+
+int 	[0-9]+
 string  \"([^\"]|\\\")*"\""
 
 %%
 
-\b[a-zA-Z]\b	yylval = strdup(yytext); return A;
-{string}		yylval = strdup(yytext); return STRING;
-{num}			yylval = strdup(yytext); return NUM;
--?\d+			yylval = strdup(yytext); return INT;
-{op}			return *yytext;
-
+[a-zA-Z][a-zA-Z_0-9]+		return new_yylval(METHOD);
+[a-zA-Z]		return new_yylval(A);
+{string}		return new_yylval(STRING);
+{num}			return new_yylval(NUM);
+{int}			return new_yylval(INT);
+{op}			yycolumn += yyleng; return *yytext;
+[ \t]+			yycolumn += yyleng;
+\n				{ new_yylval('\n'); yycolumn = 1; return '\n'; }
+.				fprintf(stderr, "%i:%i Undefined simbol `%s`\n", yylineno, yycolumn, yytext); exit(10);
+<<EOF>>			return 0;
 %%

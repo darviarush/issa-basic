@@ -39,7 +39,7 @@
 # define YY_YY_O_IS_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -58,7 +58,8 @@ extern int yydebug;
     INT = 259,                     /* INT  */
     NUM = 260,                     /* NUM  */
     STRING = 261,                  /* STRING  */
-    U = 262                        /* U  */
+    METHOD = 262,                  /* METHOD  */
+    U = 263                        /* U  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -70,23 +71,9 @@ typedef int YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
-/* Location type.  */
-#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
-typedef struct YYLTYPE YYLTYPE;
-struct YYLTYPE
-{
-  int first_line;
-  int first_column;
-  int last_line;
-  int last_column;
-};
-# define YYLTYPE_IS_DECLARED 1
-# define YYLTYPE_IS_TRIVIAL 1
-#endif
-
 
 extern YYSTYPE yylval;
-extern YYLTYPE yylloc;
+
 int yyparse (void);
 
 #endif /* !YY_YY_O_IS_TAB_H_INCLUDED  */
