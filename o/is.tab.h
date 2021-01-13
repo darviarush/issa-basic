@@ -58,8 +58,16 @@ extern int yydebug;
     INT = 259,                     /* INT  */
     NUM = 260,                     /* NUM  */
     STRING = 261,                  /* STRING  */
-    METHOD = 262,                  /* METHOD  */
-    U = 263                        /* U  */
+    IF = 262,                      /* IF  */
+    THEN = 263,                    /* THEN  */
+    AT_MOST = 264,                 /* AT_MOST  */
+    AT_LEAST = 265,                /* AT_LEAST  */
+    NE = 266,                      /* NE  */
+    AND = 267,                     /* AND  */
+    OR = 268,                      /* OR  */
+    NOT = 269,                     /* NOT  */
+    METHOD = 270,                  /* METHOD  */
+    U = 271                        /* U  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

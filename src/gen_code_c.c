@@ -18,6 +18,13 @@ void gen_code_c(node* n) {
 			printf("; ");
 			gen_code_c(n->right);
 			break;
+		case IF:
+			printf("if(");
+			gen_code_c(n->left);
+			printf(") {");
+			gen_code_c(n->right);
+			printf("}");
+			break;
 		case '=':
 			gen_code_c(n->left);
 			printf(" = ");

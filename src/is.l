@@ -32,7 +32,7 @@ static int new_yylval(int op) {
 %}
 %option yylineno
 
-op		"|"|"+"|"-"|"*"|"/"|"^"|"="|":"|"("|")"
+op		"|"|"+"|"-"|"*"|"/"|"^"|"="|":"|"("|")"|"<"|">"
 
 num		[0-9]+\.[0-9]+
 int 	[0-9]+
@@ -40,12 +40,24 @@ string  \"([^\"]|\\\")*"\""
 
 %%
 
-[a-zA-Z][a-zA-Z_0-9]+		return new_yylval(METHOD);
-[a-zA-Z]		return new_yylval(A);
+[a-zA-Z][a-zA-Z_0-9]*		{ 
+								if(yyleng == 1) return new_yylval(A);
+								if(strcmp(yytext, "and") == 0) return AND;
+								if(strcmp(yytext, "or") == 0) return OR;
+								if(strcmp(yytext, "not") == 0) return NOT;
+								if(strcmp(yytext, "if") == 0) return IF;
+								if(strcmp(yytext, "then") == 0) return THEN;
+								return new_yylval(METHOD);
+							}
 {string}		return new_yylval(STRING);
 {num}			return new_yylval(NUM);
 {int}			return new_yylval(INT);
+
+"<="			yycolumn += yyleng; return AT_MOST;
+"=>"			yycolumn += yyleng; return AT_LEAST;
+"<>"			yycolumn += yyleng; return NE;
 {op}			yycolumn += yyleng; return *yytext;
+
 [ \t]+			yycolumn += yyleng;
 \n				{ new_yylval('\n'); yycolumn = 1; return '\n'; }
 .				fprintf(stderr, "%i:%i Undefined simbol `%s`\n", yylineno, yycolumn, yytext); exit(10);

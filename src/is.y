@@ -20,9 +20,14 @@ node* yyres = NULL;
 
 
 %token  	A INT NUM STRING
+%token		IF THEN
+%token 		AT_MOST AT_LEAST NE
 
 %left '\n'
 %left ':'
+%left AND
+%left OR
+%left NOT
 %left METHOD
 %left '-' '+'
 %left '*' '/'
@@ -33,17 +38,37 @@ node* yyres = NULL;
 
 %%
 
-start:	stmt				{ yyres = $1; }
+start:	lines				{ yyres = $1; }
 ;
 
 
-stmt:	stmt '\n' stmt		{ $$ = $1 && $3? op_node('\n', $1, NULL, $3):
+lines:	lines '\n' lines	{ $$ = $1 && $3? op_node('\n', $1, NULL, $3):
 								$1? u_node('\n', $1, NULL):
 								$3? u_node('\n', $3, NULL):
 								$2;	}
-		| stmt ':' stmt		{ $$ = op_node(':', $1, NULL, $3); }
-		| A '=' exp			{ $$ = op_node('=', $1, NULL, $3); }
+		| IF lg THEN stmt	{ $$ = op_node(IF, $2, NULL, $4); }
+		| stmt				{ $$ = $1; }
 		| /* empty */		{ $$ = NULL; }
+;
+
+stmt:	stmt ':' stmt		{ $$ = op_node(':', $1, NULL, $3); }
+		| A '=' exp			{ $$ = op_node('=', $1, NULL, $3); }
+		| exp				{ $$ = $1; }
+;
+
+lg:		lg OR lg			{ $$ = op_node(METHOD, $1, "or", $3); }
+		| lg AND lg			{ $$ = op_node(METHOD, $1, "and", $3); }
+		| NOT lg			{ $$ = u_node(U, $2, "not"); }
+		| '(' lg ')'		{ $$ = $2; }
+		| cmp				{ $$ = $1; }
+;
+
+cmp:	exp '<' exp			{ $$ = op_node(METHOD, $1, "less", $3); }
+		| exp '>' exp		{ $$ = op_node(METHOD, $1, "great", $3); }
+		| exp '=' exp		{ $$ = op_node(METHOD, $1, "equal", $3); }
+		| exp AT_MOST exp	{ $$ = op_node(METHOD, $1, "at_most", $3); }
+		| exp AT_LEAST exp	{ $$ = op_node(METHOD, $1, "at_least", $3); }
+		| exp NE exp		{ $$ = op_node(METHOD, $1, "not_equal", $3); }
 ;
 
 exp:	exp METHOD exp		{ $$ = op_node(METHOD, $1, $2->text, $3); }
