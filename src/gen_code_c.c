@@ -8,6 +8,7 @@
 void gen_code_c(node* n) {
 
 	switch(n->op) {
+		
 		case '\n':
 			if(n->left) gen_code_c(n->left);
 			printf("\n");
@@ -47,7 +48,7 @@ void gen_code_c(node* n) {
 			gen_code_c(n->left);
 			printf(")");
 			break;
-		case METHOD:
+		case WORD:
 			printf("%s(", n->text);
 			gen_code_c(n->left);
 			printf(", ");

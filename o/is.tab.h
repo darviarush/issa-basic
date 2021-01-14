@@ -60,14 +60,18 @@ extern int yydebug;
     STRING = 261,                  /* STRING  */
     IF = 262,                      /* IF  */
     THEN = 263,                    /* THEN  */
-    AT_MOST = 264,                 /* AT_MOST  */
-    AT_LEAST = 265,                /* AT_LEAST  */
-    NE = 266,                      /* NE  */
-    AND = 267,                     /* AND  */
+    RETURN = 264,                  /* RETURN  */
+    FOR = 265,                     /* FOR  */
+    NEXT = 266,                    /* NEXT  */
+    WORD = 267,                    /* WORD  */
     OR = 268,                      /* OR  */
-    NOT = 269,                     /* NOT  */
-    METHOD = 270,                  /* METHOD  */
-    U = 271                        /* U  */
+    AND = 269,                     /* AND  */
+    NOT = 270,                     /* NOT  */
+    AT_MOST = 271,                 /* AT_MOST  */
+    AT_LEAST = 272,                /* AT_LEAST  */
+    NE = 273,                      /* NE  */
+    U = 274,                       /* U  */
+    UMETHOD = 275                  /* UMETHOD  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

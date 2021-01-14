@@ -21,63 +21,98 @@ node* yyres = NULL;
 
 %token  	A INT NUM STRING
 %token		IF THEN
-%token 		AT_MOST AT_LEAST NE
+%token		RETURN
+%token		FOR NEXT
 
 %left '\n'
+%left '|'
 %left ':'
-%left AND
+%left WORD
 %left OR
+%left AND
 %left NOT
-%left METHOD
+%left '<' '>' '=' AT_MOST AT_LEAST NE
+%left ';'
+%left ','
 %left '-' '+'
 %left '*' '/'
 %left '^'
 %left U
+%left UMETHOD
+%left '$' '%' '#' '!'
 
 %start start
 
 %%
 
-start:	lines				{ yyres = $1; }
+start:	signature '\n' lines ret { yyres = op_node('\f', $1, NULL, $3); }
 ;
 
+ret:	RETURN exp			{ $$ = u_node(RETURN, $2, NULL); }
+		| /* empty */		{ $$ = NULL; }
+;
+
+signature: WORD				{ $$ = $1; }
+		| arguments 		{ $$ = $1; }
+;
+
+arguments: argument arguments	{ $$ = op_node(',', $1, NULL, $2); }
+		| argument 				{ $$ = $1; }
+;
+
+argument: WORD A 			{ $$ = op_node('\a', $1, NULL, $2); }
+		| WORD '&' A		{ $$ = op_node('\b', $1, NULL, $3); }
+;
 
 lines:	lines '\n' lines	{ $$ = $1 && $3? op_node('\n', $1, NULL, $3):
 								$1? u_node('\n', $1, NULL):
 								$3? u_node('\n', $3, NULL):
 								$2;	}
-		| IF lg THEN stmt	{ $$ = op_node(IF, $2, NULL, $4); }
+		| IF exp THEN stmt	{ $$ = op_node(IF, $2, NULL, $4); }
+		| FOR A '=' exp		{ $$ = op_node(FOR, $2, NULL, $4); }
+		| NEXT next 		{ $$ = u_node(NEXT, $2, NULL); }
 		| stmt				{ $$ = $1; }
 		| /* empty */		{ $$ = NULL; }
 ;
 
-stmt:	stmt ':' stmt		{ $$ = op_node(':', $1, NULL, $3); }
+next:	next ',' next 		{ $$ = op_node(',', $1, NULL, $3); }
+		| A 				{ $$ = $1; }
+;
+
+stmt:	
+		stmt '|' stmt		{ $$ = op_node(WORD, $1, "OR", $3); }
+		| stmt ':' stmt		{ $$ = op_node(':', $1, NULL, $3); }
 		| A '=' exp			{ $$ = op_node('=', $1, NULL, $3); }
-		| exp				{ $$ = $1; }
+		| WORD exp			{ $$ = op_node('=', $1, NULL, $2); }
 ;
 
-lg:		lg OR lg			{ $$ = op_node(METHOD, $1, "or", $3); }
-		| lg AND lg			{ $$ = op_node(METHOD, $1, "and", $3); }
-		| NOT lg			{ $$ = u_node(U, $2, "not"); }
-		| '(' lg ')'		{ $$ = $2; }
-		| cmp				{ $$ = $1; }
-;
+exp:	exp OR exp			{ $$ = op_node(WORD, $1, "or", $3); }
+		| exp AND exp		{ $$ = op_node(WORD, $1, "and", $3); }
+		| NOT exp			{ $$ = u_node(U, $2, "not"); }
 
-cmp:	exp '<' exp			{ $$ = op_node(METHOD, $1, "less", $3); }
-		| exp '>' exp		{ $$ = op_node(METHOD, $1, "great", $3); }
-		| exp '=' exp		{ $$ = op_node(METHOD, $1, "equal", $3); }
-		| exp AT_MOST exp	{ $$ = op_node(METHOD, $1, "at_most", $3); }
-		| exp AT_LEAST exp	{ $$ = op_node(METHOD, $1, "at_least", $3); }
-		| exp NE exp		{ $$ = op_node(METHOD, $1, "not_equal", $3); }
-;
+		| exp '<' exp		{ $$ = op_node(WORD, $1, "less", $3); }
+		| exp '>' exp		{ $$ = op_node(WORD, $1, "great", $3); }
+		| exp '=' exp		{ $$ = op_node(WORD, $1, "equal", $3); }
+		| exp AT_MOST exp	{ $$ = op_node(WORD, $1, "at_most", $3); }
+		| exp AT_LEAST exp	{ $$ = op_node(WORD, $1, "at_least", $3); }
+		| exp NE exp		{ $$ = op_node(WORD, $1, "not_equal", $3); }
 
-exp:	exp METHOD exp		{ $$ = op_node(METHOD, $1, $2->text, $3); }
-		| exp '+' exp		{ $$ = op_node(METHOD, $1, "add", $3); }
-		| exp '-' exp		{ $$ = op_node(METHOD, $1, "sub", $3); }
-		| exp '*' exp		{ $$ = op_node(METHOD, $1, "mul", $3); }
-		| exp '/' exp		{ $$ = op_node(METHOD, $1, "div", $3); }
-		| exp '^' exp		{ $$ = op_node(METHOD, $1, "pow", $3); }
+
+		| exp WORD exp		{ $$ = op_node(WORD, $1, $2->text, $3); }
+		| exp ',' exp		{ $$ = op_node(',', $1, NULL, $3); }
+		| exp ';' exp		{ $$ = op_node(';', $1, NULL, $3); }
+
+		| exp '+' exp		{ $$ = op_node(WORD, $1, "add", $3); }
+		| exp '-' exp		{ $$ = op_node(WORD, $1, "sub", $3); }
+		| exp '*' exp		{ $$ = op_node(WORD, $1, "mul", $3); }
+		| exp '/' exp		{ $$ = op_node(WORD, $1, "div", $3); }
+		| exp '^' exp		{ $$ = op_node(WORD, $1, "pow", $3); }
 		| '-' exp %prec U	{ $$ = u_node(U, $2, "neg"); }
+		| exp '$'			{ $$ = u_node(U, $2, "asString"); }
+		| exp '%'			{ $$ = u_node(U, $2, "asInteger"); }
+		| exp '!'			{ $$ = u_node(U, $2, "asFloat"); }
+		| exp '#'			{ $$ = u_node(U, $2, "asDouble"); }
+		| exp WORD %prec UMETHOD { $$ = u_node(U, $1, $2->text); }
 		| '(' exp ')'		{ $$ = $2; }
 		| A 				{ $$ = $1; }
 		| INT 				{ $$ = $1; }

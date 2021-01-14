@@ -1,5 +1,7 @@
 .PHONY: all
 
+BFLAGS = -Wcounterexamples -Wdangling-alias -r all 
+
 objects := $(patsubst src/%.c,o/%.o,$(wildcard src/*.c))
 
 
@@ -11,7 +13,7 @@ is: o/is.l.o o/is.y.o $(objects)
 	gcc -o $@ $^
 
 o/is.tab.c o/is.tab.h: src/is.y src/node.h
-	bison src/is.y -o o/is.tab.c --defines=o/is.tab.h
+	bison $(BFLAGS) src/is.y -o o/is.tab.c --defines=o/is.tab.h
 
 o/is.y.o: o/is.tab.c
 	gcc -o o/is.y.o -c o/is.tab.c

@@ -1,0 +1,2976 @@
+Грамматика
+
+    0 $accept: start $end
+
+    1 start: signature '\n' lines ret
+
+    2 ret: RETURN exp
+    3    | %empty
+
+    4 signature: WORD
+    5          | arguments
+
+    6 arguments: argument arguments
+    7          | argument
+
+    8 argument: WORD A
+    9         | WORD '&' A
+
+   10 lines: lines '\n' lines
+   11      | IF exp THEN stmt
+   12      | FOR A '=' exp
+   13      | NEXT next
+   14      | stmt
+   15      | %empty
+
+   16 next: next ',' next
+   17     | A
+
+   18 stmt: stmt '|' stmt
+   19     | stmt ':' stmt
+   20     | A '=' exp
+   21     | WORD exp
+
+   22 exp: exp OR exp
+   23    | exp AND exp
+   24    | NOT exp
+   25    | exp '<' exp
+   26    | exp '>' exp
+   27    | exp '=' exp
+   28    | exp AT_MOST exp
+   29    | exp AT_LEAST exp
+   30    | exp NE exp
+   31    | exp WORD exp
+   32    | exp ',' exp
+   33    | exp ';' exp
+   34    | exp '+' exp
+   35    | exp '-' exp
+   36    | exp '*' exp
+   37    | exp '/' exp
+   38    | exp '^' exp
+   39    | '-' exp
+   40    | exp '$'
+   41    | exp '%'
+   42    | exp '!'
+   43    | exp '#'
+   44    | exp WORD
+   45    | '(' exp ')'
+   46    | A
+   47    | INT
+   48    | NUM
+   49    | STRING
+
+
+Терминальные символы с правилами, в которых они появляются
+
+    $end (0) 0
+    '\n' (10) 1 10
+    '!' (33) 42
+    '#' (35) 43
+    '$' (36) 40
+    '%' (37) 41
+    '&' (38) 9
+    '(' (40) 45
+    ')' (41) 45
+    '*' (42) 36
+    '+' (43) 34
+    ',' (44) 16 32
+    '-' (45) 35 39
+    '/' (47) 37
+    ':' (58) 19
+    ';' (59) 33
+    '<' (60) 25
+    '=' (61) 12 20 27
+    '>' (62) 26
+    '^' (94) 38
+    '|' (124) 18
+    error (256)
+    A (258) 8 9 12 17 20 46
+    INT (259) 47
+    NUM (260) 48
+    STRING (261) 49
+    IF (262) 11
+    THEN (263) 11
+    RETURN (264) 2
+    FOR (265) 12
+    NEXT (266) 13
+    WORD (267) 4 8 9 21 31 44
+    OR (268) 22
+    AND (269) 23
+    NOT (270) 24
+    AT_MOST (271) 28
+    AT_LEAST (272) 29
+    NE (273) 30
+    U (274)
+    UMETHOD (275)
+
+
+Нетерминальные символы с правилами, в которых они появляются
+
+    $accept (41)
+        on left: 0
+    start (42)
+        on left: 1
+        on right: 0
+    ret (43)
+        on left: 2 3
+        on right: 1
+    signature (44)
+        on left: 4 5
+        on right: 1
+    arguments (45)
+        on left: 6 7
+        on right: 5 6
+    argument (46)
+        on left: 8 9
+        on right: 6 7
+    lines (47)
+        on left: 10 11 12 13 14 15
+        on right: 1 10
+    next (48)
+        on left: 16 17
+        on right: 13 16
+    stmt (49)
+        on left: 18 19 20 21
+        on right: 11 14 18 19
+    exp (50)
+        on left: 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
+        on right: 2 11 12 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45
+
+
+State 0
+
+    0 $accept: • start $end
+    1 start: • signature '\n' lines ret
+    4 signature: • WORD
+    5          | • arguments
+    6 arguments: • argument arguments
+    7          | • argument
+    8 argument: • WORD A
+    9         | • WORD '&' A
+
+    WORD  сдвиг, и переход в состояние 1
+
+    start      переход в состояние 2
+    signature  переход в состояние 3
+    arguments  переход в состояние 4
+    argument   переход в состояние 5
+
+
+State 1
+
+    4 signature: WORD •  ['\n']
+    8 argument: WORD • A
+    9         | WORD • '&' A
+
+    A    сдвиг, и переход в состояние 6
+    '&'  сдвиг, и переход в состояние 7
+
+    $default  вывод с использованием правила 4 (signature)
+
+
+State 2
+
+    0 $accept: start • $end
+
+    $end  сдвиг, и переход в состояние 8
+
+
+State 3
+
+    1 start: signature • '\n' lines ret
+
+    '\n'  сдвиг, и переход в состояние 9
+
+
+State 4
+
+    5 signature: arguments •
+
+    $default  вывод с использованием правила 5 (signature)
+
+
+State 5
+
+    6 arguments: • argument arguments
+    6          | argument • arguments
+    7          | • argument
+    7          | argument •  ['\n']
+    8 argument: • WORD A
+    9         | • WORD '&' A
+
+    WORD  сдвиг, и переход в состояние 10
+
+    $default  вывод с использованием правила 7 (arguments)
+
+    arguments  переход в состояние 11
+    argument   переход в состояние 5
+
+
+State 6
+
+    8 argument: WORD A •
+
+    $default  вывод с использованием правила 8 (argument)
+
+
+State 7
+
+    9 argument: WORD '&' • A
+
+    A  сдвиг, и переход в состояние 12
+
+
+State 8
+
+    0 $accept: start $end •
+
+    $default  принять
+
+
+State 9
+
+    1 start: signature '\n' • lines ret
+   10 lines: • lines '\n' lines
+   11      | • IF exp THEN stmt
+   12      | • FOR A '=' exp
+   13      | • NEXT next
+   14      | • stmt
+   15      | • %empty  [$end, RETURN, '\n']
+   18 stmt: • stmt '|' stmt
+   19     | • stmt ':' stmt
+   20     | • A '=' exp
+   21     | • WORD exp
+
+    A     сдвиг, и переход в состояние 13
+    IF    сдвиг, и переход в состояние 14
+    FOR   сдвиг, и переход в состояние 15
+    NEXT  сдвиг, и переход в состояние 16
+    WORD  сдвиг, и переход в состояние 17
+
+    $default  вывод с использованием правила 15 (lines)
+
+    lines  переход в состояние 18
+    stmt   переход в состояние 19
+
+
+State 10
+
+    8 argument: WORD • A
+    9         | WORD • '&' A
+
+    A    сдвиг, и переход в состояние 6
+    '&'  сдвиг, и переход в состояние 7
+
+
+State 11
+
+    6 arguments: argument arguments •
+
+    $default  вывод с использованием правила 6 (arguments)
+
+
+State 12
+
+    9 argument: WORD '&' A •
+
+    $default  вывод с использованием правила 9 (argument)
+
+
+State 13
+
+   20 stmt: A • '=' exp
+
+    '='  сдвиг, и переход в состояние 20
+
+
+State 14
+
+   11 lines: IF • exp THEN stmt
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 28
+
+
+State 15
+
+   12 lines: FOR • A '=' exp
+
+    A  сдвиг, и переход в состояние 29
+
+
+State 16
+
+   13 lines: NEXT • next
+   16 next: • next ',' next
+   17     | • A
+
+    A  сдвиг, и переход в состояние 30
+
+    next  переход в состояние 31
+
+
+State 17
+
+   21 stmt: WORD • exp
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 32
+
+
+State 18
+
+    1 start: signature '\n' lines • ret
+    2 ret: • RETURN exp
+    3    | • %empty  [$end]
+   10 lines: lines • '\n' lines
+
+    RETURN  сдвиг, и переход в состояние 33
+    '\n'    сдвиг, и переход в состояние 34
+
+    $default  вывод с использованием правила 3 (ret)
+
+    ret  переход в состояние 35
+
+
+State 19
+
+   14 lines: stmt •  [$end, RETURN, '\n']
+   18 stmt: stmt • '|' stmt
+   19     | stmt • ':' stmt
+
+    '|'  сдвиг, и переход в состояние 36
+    ':'  сдвиг, и переход в состояние 37
+
+    $default  вывод с использованием правила 14 (lines)
+
+
+State 20
+
+   20 stmt: A '=' • exp
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 38
+
+
+State 21
+
+   46 exp: A •
+
+    $default  вывод с использованием правила 46 (exp)
+
+
+State 22
+
+   47 exp: INT •
+
+    $default  вывод с использованием правила 47 (exp)
+
+
+State 23
+
+   48 exp: NUM •
+
+    $default  вывод с использованием правила 48 (exp)
+
+
+State 24
+
+   49 exp: STRING •
+
+    $default  вывод с использованием правила 49 (exp)
+
+
+State 25
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   24    | NOT • exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 39
+
+
+State 26
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   39    | '-' • exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 40
+
+
+State 27
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   45    | '(' • exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 41
+
+
+State 28
+
+   11 lines: IF exp • THEN stmt
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    THEN      сдвиг, и переход в состояние 42
+    WORD      сдвиг, и переход в состояние 43
+    OR        сдвиг, и переход в состояние 44
+    AND       сдвиг, и переход в состояние 45
+    '<'       сдвиг, и переход в состояние 46
+    '>'       сдвиг, и переход в состояние 47
+    '='       сдвиг, и переход в состояние 48
+    AT_MOST   сдвиг, и переход в состояние 49
+    AT_LEAST  сдвиг, и переход в состояние 50
+    NE        сдвиг, и переход в состояние 51
+    ';'       сдвиг, и переход в состояние 52
+    ','       сдвиг, и переход в состояние 53
+    '-'       сдвиг, и переход в состояние 54
+    '+'       сдвиг, и переход в состояние 55
+    '*'       сдвиг, и переход в состояние 56
+    '/'       сдвиг, и переход в состояние 57
+    '^'       сдвиг, и переход в состояние 58
+    '$'       сдвиг, и переход в состояние 59
+    '%'       сдвиг, и переход в состояние 60
+    '#'       сдвиг, и переход в состояние 61
+    '!'       сдвиг, и переход в состояние 62
+
+
+State 29
+
+   12 lines: FOR A • '=' exp
+
+    '='  сдвиг, и переход в состояние 63
+
+
+State 30
+
+   17 next: A •
+
+    $default  вывод с использованием правила 17 (next)
+
+
+State 31
+
+   13 lines: NEXT next •  [$end, RETURN, '\n']
+   16 next: next • ',' next
+
+    ','  сдвиг, и переход в состояние 64
+
+    $default  вывод с использованием правила 13 (lines)
+
+
+State 32
+
+   21 stmt: WORD exp •  [$end, RETURN, '\n', '|', ':']
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    WORD      сдвиг, и переход в состояние 43
+    OR        сдвиг, и переход в состояние 44
+    AND       сдвиг, и переход в состояние 45
+    '<'       сдвиг, и переход в состояние 46
+    '>'       сдвиг, и переход в состояние 47
+    '='       сдвиг, и переход в состояние 48
+    AT_MOST   сдвиг, и переход в состояние 49
+    AT_LEAST  сдвиг, и переход в состояние 50
+    NE        сдвиг, и переход в состояние 51
+    ';'       сдвиг, и переход в состояние 52
+    ','       сдвиг, и переход в состояние 53
+    '-'       сдвиг, и переход в состояние 54
+    '+'       сдвиг, и переход в состояние 55
+    '*'       сдвиг, и переход в состояние 56
+    '/'       сдвиг, и переход в состояние 57
+    '^'       сдвиг, и переход в состояние 58
+    '$'       сдвиг, и переход в состояние 59
+    '%'       сдвиг, и переход в состояние 60
+    '#'       сдвиг, и переход в состояние 61
+    '!'       сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 21 (stmt)
+
+
+State 33
+
+    2 ret: RETURN • exp
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 65
+
+
+State 34
+
+   10 lines: • lines '\n' lines
+   10      | lines '\n' • lines
+   11      | • IF exp THEN stmt
+   12      | • FOR A '=' exp
+   13      | • NEXT next
+   14      | • stmt
+   15      | • %empty  [$end, RETURN, '\n']
+   18 stmt: • stmt '|' stmt
+   19     | • stmt ':' stmt
+   20     | • A '=' exp
+   21     | • WORD exp
+
+    A     сдвиг, и переход в состояние 13
+    IF    сдвиг, и переход в состояние 14
+    FOR   сдвиг, и переход в состояние 15
+    NEXT  сдвиг, и переход в состояние 16
+    WORD  сдвиг, и переход в состояние 17
+
+    $default  вывод с использованием правила 15 (lines)
+
+    lines  переход в состояние 66
+    stmt   переход в состояние 19
+
+
+State 35
+
+    1 start: signature '\n' lines ret •
+
+    $default  вывод с использованием правила 1 (start)
+
+
+State 36
+
+   18 stmt: • stmt '|' stmt
+   18     | stmt '|' • stmt
+   19     | • stmt ':' stmt
+   20     | • A '=' exp
+   21     | • WORD exp
+
+    A     сдвиг, и переход в состояние 13
+    WORD  сдвиг, и переход в состояние 17
+
+    stmt  переход в состояние 67
+
+
+State 37
+
+   18 stmt: • stmt '|' stmt
+   19     | • stmt ':' stmt
+   19     | stmt ':' • stmt
+   20     | • A '=' exp
+   21     | • WORD exp
+
+    A     сдвиг, и переход в состояние 13
+    WORD  сдвиг, и переход в состояние 17
+
+    stmt  переход в состояние 68
+
+
+State 38
+
+   20 stmt: A '=' exp •  [$end, RETURN, '\n', '|', ':']
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    WORD      сдвиг, и переход в состояние 43
+    OR        сдвиг, и переход в состояние 44
+    AND       сдвиг, и переход в состояние 45
+    '<'       сдвиг, и переход в состояние 46
+    '>'       сдвиг, и переход в состояние 47
+    '='       сдвиг, и переход в состояние 48
+    AT_MOST   сдвиг, и переход в состояние 49
+    AT_LEAST  сдвиг, и переход в состояние 50
+    NE        сдвиг, и переход в состояние 51
+    ';'       сдвиг, и переход в состояние 52
+    ','       сдвиг, и переход в состояние 53
+    '-'       сдвиг, и переход в состояние 54
+    '+'       сдвиг, и переход в состояние 55
+    '*'       сдвиг, и переход в состояние 56
+    '/'       сдвиг, и переход в состояние 57
+    '^'       сдвиг, и переход в состояние 58
+    '$'       сдвиг, и переход в состояние 59
+    '%'       сдвиг, и переход в состояние 60
+    '#'       сдвиг, и переход в состояние 61
+    '!'       сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 20 (stmt)
+
+
+State 39
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   24    | NOT exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, ')']
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    '<'       сдвиг, и переход в состояние 46
+    '>'       сдвиг, и переход в состояние 47
+    '='       сдвиг, и переход в состояние 48
+    AT_MOST   сдвиг, и переход в состояние 49
+    AT_LEAST  сдвиг, и переход в состояние 50
+    NE        сдвиг, и переход в состояние 51
+    ';'       сдвиг, и переход в состояние 52
+    ','       сдвиг, и переход в состояние 53
+    '-'       сдвиг, и переход в состояние 54
+    '+'       сдвиг, и переход в состояние 55
+    '*'       сдвиг, и переход в состояние 56
+    '/'       сдвиг, и переход в состояние 57
+    '^'       сдвиг, и переход в состояние 58
+    '$'       сдвиг, и переход в состояние 59
+    '%'       сдвиг, и переход в состояние 60
+    '#'       сдвиг, и переход в состояние 61
+    '!'       сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 24 (exp)
+
+    Conflict between rule 24 and token WORD resolved as reduce (WORD < NOT).
+    Conflict between rule 24 and token OR resolved as reduce (OR < NOT).
+    Conflict between rule 24 and token AND resolved as reduce (AND < NOT).
+    Conflict between rule 24 and token '<' resolved as shift (NOT < '<').
+    Conflict between rule 24 and token '>' resolved as shift (NOT < '>').
+    Conflict between rule 24 and token '=' resolved as shift (NOT < '=').
+    Conflict between rule 24 and token AT_MOST resolved as shift (NOT < AT_MOST).
+    Conflict between rule 24 and token AT_LEAST resolved as shift (NOT < AT_LEAST).
+    Conflict between rule 24 and token NE resolved as shift (NOT < NE).
+    Conflict between rule 24 and token ';' resolved as shift (NOT < ';').
+    Conflict between rule 24 and token ',' resolved as shift (NOT < ',').
+    Conflict between rule 24 and token '-' resolved as shift (NOT < '-').
+    Conflict between rule 24 and token '+' resolved as shift (NOT < '+').
+    Conflict between rule 24 and token '*' resolved as shift (NOT < '*').
+    Conflict between rule 24 and token '/' resolved as shift (NOT < '/').
+    Conflict between rule 24 and token '^' resolved as shift (NOT < '^').
+    Conflict between rule 24 and token '$' resolved as shift (NOT < '$').
+    Conflict between rule 24 and token '%' resolved as shift (NOT < '%').
+    Conflict between rule 24 and token '#' resolved as shift (NOT < '#').
+    Conflict between rule 24 and token '!' resolved as shift (NOT < '!').
+
+
+State 40
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   39    | '-' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ';', ',', '-', '+', '*', '/', '^', ')']
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 39 (exp)
+
+    Conflict between rule 39 and token WORD resolved as reduce (WORD < U).
+    Conflict between rule 39 and token OR resolved as reduce (OR < U).
+    Conflict between rule 39 and token AND resolved as reduce (AND < U).
+    Conflict between rule 39 and token '<' resolved as reduce ('<' < U).
+    Conflict between rule 39 and token '>' resolved as reduce ('>' < U).
+    Conflict between rule 39 and token '=' resolved as reduce ('=' < U).
+    Conflict between rule 39 and token AT_MOST resolved as reduce (AT_MOST < U).
+    Conflict between rule 39 and token AT_LEAST resolved as reduce (AT_LEAST < U).
+    Conflict between rule 39 and token NE resolved as reduce (NE < U).
+    Conflict between rule 39 and token ';' resolved as reduce (';' < U).
+    Conflict between rule 39 and token ',' resolved as reduce (',' < U).
+    Conflict between rule 39 and token '-' resolved as reduce ('-' < U).
+    Conflict between rule 39 and token '+' resolved as reduce ('+' < U).
+    Conflict between rule 39 and token '*' resolved as reduce ('*' < U).
+    Conflict between rule 39 and token '/' resolved as reduce ('/' < U).
+    Conflict between rule 39 and token '^' resolved as reduce ('^' < U).
+    Conflict between rule 39 and token '$' resolved as shift (U < '$').
+    Conflict between rule 39 and token '%' resolved as shift (U < '%').
+    Conflict between rule 39 and token '#' resolved as shift (U < '#').
+    Conflict between rule 39 and token '!' resolved as shift (U < '!').
+
+
+State 41
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+   45    | '(' exp • ')'
+
+    WORD      сдвиг, и переход в состояние 43
+    OR        сдвиг, и переход в состояние 44
+    AND       сдвиг, и переход в состояние 45
+    '<'       сдвиг, и переход в состояние 46
+    '>'       сдвиг, и переход в состояние 47
+    '='       сдвиг, и переход в состояние 48
+    AT_MOST   сдвиг, и переход в состояние 49
+    AT_LEAST  сдвиг, и переход в состояние 50
+    NE        сдвиг, и переход в состояние 51
+    ';'       сдвиг, и переход в состояние 52
+    ','       сдвиг, и переход в состояние 53
+    '-'       сдвиг, и переход в состояние 54
+    '+'       сдвиг, и переход в состояние 55
+    '*'       сдвиг, и переход в состояние 56
+    '/'       сдвиг, и переход в состояние 57
+    '^'       сдвиг, и переход в состояние 58
+    '$'       сдвиг, и переход в состояние 59
+    '%'       сдвиг, и переход в состояние 60
+    '#'       сдвиг, и переход в состояние 61
+    '!'       сдвиг, и переход в состояние 62
+    ')'       сдвиг, и переход в состояние 69
+
+
+State 42
+
+   11 lines: IF exp THEN • stmt
+   18 stmt: • stmt '|' stmt
+   19     | • stmt ':' stmt
+   20     | • A '=' exp
+   21     | • WORD exp
+
+    A     сдвиг, и переход в состояние 13
+    WORD  сдвиг, и переход в состояние 17
+
+    stmt  переход в состояние 70
+
+
+State 43
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   31    | exp WORD • exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   44    | exp WORD •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ';', ',', '-', '+', '*', '/', '^', '$', '%', '#', '!', ')']
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '('     сдвиг, и переход в состояние 27
+
+    $default  вывод с использованием правила 44 (exp)
+
+    exp  переход в состояние 71
+
+    Conflict between rule 44 and token '-' resolved as reduce ('-' < UMETHOD).
+
+
+State 44
+
+   22 exp: • exp OR exp
+   22    | exp OR • exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 72
+
+
+State 45
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   23    | exp AND • exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 73
+
+
+State 46
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   25    | exp '<' • exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 74
+
+
+State 47
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   26    | exp '>' • exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 75
+
+
+State 48
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   27    | exp '=' • exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 76
+
+
+State 49
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   28    | exp AT_MOST • exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 77
+
+
+State 50
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   29    | exp AT_LEAST • exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 78
+
+
+State 51
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   30    | exp NE • exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 79
+
+
+State 52
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   33    | exp ';' • exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 80
+
+
+State 53
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   32    | exp ',' • exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 81
+
+
+State 54
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   35    | exp '-' • exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 82
+
+
+State 55
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   34    | exp '+' • exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 83
+
+
+State 56
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   36    | exp '*' • exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 84
+
+
+State 57
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   37    | exp '/' • exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 85
+
+
+State 58
+
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   38    | exp '^' • exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 86
+
+
+State 59
+
+   40 exp: exp '$' •
+
+    $default  вывод с использованием правила 40 (exp)
+
+
+State 60
+
+   41 exp: exp '%' •
+
+    $default  вывод с использованием правила 41 (exp)
+
+
+State 61
+
+   43 exp: exp '#' •
+
+    $default  вывод с использованием правила 43 (exp)
+
+
+State 62
+
+   42 exp: exp '!' •
+
+    $default  вывод с использованием правила 42 (exp)
+
+
+State 63
+
+   12 lines: FOR A '=' • exp
+   22 exp: • exp OR exp
+   23    | • exp AND exp
+   24    | • NOT exp
+   25    | • exp '<' exp
+   26    | • exp '>' exp
+   27    | • exp '=' exp
+   28    | • exp AT_MOST exp
+   29    | • exp AT_LEAST exp
+   30    | • exp NE exp
+   31    | • exp WORD exp
+   32    | • exp ',' exp
+   33    | • exp ';' exp
+   34    | • exp '+' exp
+   35    | • exp '-' exp
+   36    | • exp '*' exp
+   37    | • exp '/' exp
+   38    | • exp '^' exp
+   39    | • '-' exp
+   40    | • exp '$'
+   41    | • exp '%'
+   42    | • exp '!'
+   43    | • exp '#'
+   44    | • exp WORD
+   45    | • '(' exp ')'
+   46    | • A
+   47    | • INT
+   48    | • NUM
+   49    | • STRING
+
+    A       сдвиг, и переход в состояние 21
+    INT     сдвиг, и переход в состояние 22
+    NUM     сдвиг, и переход в состояние 23
+    STRING  сдвиг, и переход в состояние 24
+    NOT     сдвиг, и переход в состояние 25
+    '-'     сдвиг, и переход в состояние 26
+    '('     сдвиг, и переход в состояние 27
+
+    exp  переход в состояние 87
+
+
+State 64
+
+   16 next: • next ',' next
+   16     | next ',' • next
+   17     | • A
+
+    A  сдвиг, и переход в состояние 30
+
+    next  переход в состояние 88
+
+
+State 65
+
+    2 ret: RETURN exp •  [$end]
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    WORD      сдвиг, и переход в состояние 43
+    OR        сдвиг, и переход в состояние 44
+    AND       сдвиг, и переход в состояние 45
+    '<'       сдвиг, и переход в состояние 46
+    '>'       сдвиг, и переход в состояние 47
+    '='       сдвиг, и переход в состояние 48
+    AT_MOST   сдвиг, и переход в состояние 49
+    AT_LEAST  сдвиг, и переход в состояние 50
+    NE        сдвиг, и переход в состояние 51
+    ';'       сдвиг, и переход в состояние 52
+    ','       сдвиг, и переход в состояние 53
+    '-'       сдвиг, и переход в состояние 54
+    '+'       сдвиг, и переход в состояние 55
+    '*'       сдвиг, и переход в состояние 56
+    '/'       сдвиг, и переход в состояние 57
+    '^'       сдвиг, и переход в состояние 58
+    '$'       сдвиг, и переход в состояние 59
+    '%'       сдвиг, и переход в состояние 60
+    '#'       сдвиг, и переход в состояние 61
+    '!'       сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 2 (ret)
+
+
+State 66
+
+   10 lines: lines • '\n' lines
+   10      | lines '\n' lines •  [$end, RETURN, '\n']
+
+    $default  вывод с использованием правила 10 (lines)
+
+    Conflict between rule 10 and token '\n' resolved as reduce (%left '\n').
+
+
+State 67
+
+   18 stmt: stmt • '|' stmt
+   18     | stmt '|' stmt •  [$end, RETURN, '\n', '|']
+   19     | stmt • ':' stmt
+
+    ':'  сдвиг, и переход в состояние 37
+
+    $default  вывод с использованием правила 18 (stmt)
+
+    Conflict between rule 18 and token '|' resolved as reduce (%left '|').
+    Conflict between rule 18 and token ':' resolved as shift ('|' < ':').
+
+
+State 68
+
+   18 stmt: stmt • '|' stmt
+   19     | stmt • ':' stmt
+   19     | stmt ':' stmt •  [$end, RETURN, '\n', '|', ':']
+
+    $default  вывод с использованием правила 19 (stmt)
+
+    Conflict between rule 19 and token '|' resolved as reduce ('|' < ':').
+    Conflict between rule 19 and token ':' resolved as reduce (%left ':').
+
+
+State 69
+
+   45 exp: '(' exp ')' •
+
+    $default  вывод с использованием правила 45 (exp)
+
+
+State 70
+
+   11 lines: IF exp THEN stmt •  [$end, RETURN, '\n']
+   18 stmt: stmt • '|' stmt
+   19     | stmt • ':' stmt
+
+    '|'  сдвиг, и переход в состояние 36
+    ':'  сдвиг, и переход в состояние 37
+
+    $default  вывод с использованием правила 11 (lines)
+
+
+State 71
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   31    | exp WORD exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, ')']
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    OR        сдвиг, и переход в состояние 44
+    AND       сдвиг, и переход в состояние 45
+    '<'       сдвиг, и переход в состояние 46
+    '>'       сдвиг, и переход в состояние 47
+    '='       сдвиг, и переход в состояние 48
+    AT_MOST   сдвиг, и переход в состояние 49
+    AT_LEAST  сдвиг, и переход в состояние 50
+    NE        сдвиг, и переход в состояние 51
+    ';'       сдвиг, и переход в состояние 52
+    ','       сдвиг, и переход в состояние 53
+    '-'       сдвиг, и переход в состояние 54
+    '+'       сдвиг, и переход в состояние 55
+    '*'       сдвиг, и переход в состояние 56
+    '/'       сдвиг, и переход в состояние 57
+    '^'       сдвиг, и переход в состояние 58
+    '$'       сдвиг, и переход в состояние 59
+    '%'       сдвиг, и переход в состояние 60
+    '#'       сдвиг, и переход в состояние 61
+    '!'       сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 31 (exp)
+
+    Conflict between rule 31 and token WORD resolved as reduce (%left WORD).
+    Conflict between rule 31 and token OR resolved as shift (WORD < OR).
+    Conflict between rule 31 and token AND resolved as shift (WORD < AND).
+    Conflict between rule 31 and token '<' resolved as shift (WORD < '<').
+    Conflict between rule 31 and token '>' resolved as shift (WORD < '>').
+    Conflict between rule 31 and token '=' resolved as shift (WORD < '=').
+    Conflict between rule 31 and token AT_MOST resolved as shift (WORD < AT_MOST).
+    Conflict between rule 31 and token AT_LEAST resolved as shift (WORD < AT_LEAST).
+    Conflict between rule 31 and token NE resolved as shift (WORD < NE).
+    Conflict between rule 31 and token ';' resolved as shift (WORD < ';').
+    Conflict between rule 31 and token ',' resolved as shift (WORD < ',').
+    Conflict between rule 31 and token '-' resolved as shift (WORD < '-').
+    Conflict between rule 31 and token '+' resolved as shift (WORD < '+').
+    Conflict between rule 31 and token '*' resolved as shift (WORD < '*').
+    Conflict between rule 31 and token '/' resolved as shift (WORD < '/').
+    Conflict between rule 31 and token '^' resolved as shift (WORD < '^').
+    Conflict between rule 31 and token '$' resolved as shift (WORD < '$').
+    Conflict between rule 31 and token '%' resolved as shift (WORD < '%').
+    Conflict between rule 31 and token '#' resolved as shift (WORD < '#').
+    Conflict between rule 31 and token '!' resolved as shift (WORD < '!').
+
+
+State 72
+
+   22 exp: exp • OR exp
+   22    | exp OR exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, ')']
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    AND       сдвиг, и переход в состояние 45
+    '<'       сдвиг, и переход в состояние 46
+    '>'       сдвиг, и переход в состояние 47
+    '='       сдвиг, и переход в состояние 48
+    AT_MOST   сдвиг, и переход в состояние 49
+    AT_LEAST  сдвиг, и переход в состояние 50
+    NE        сдвиг, и переход в состояние 51
+    ';'       сдвиг, и переход в состояние 52
+    ','       сдвиг, и переход в состояние 53
+    '-'       сдвиг, и переход в состояние 54
+    '+'       сдвиг, и переход в состояние 55
+    '*'       сдвиг, и переход в состояние 56
+    '/'       сдвиг, и переход в состояние 57
+    '^'       сдвиг, и переход в состояние 58
+    '$'       сдвиг, и переход в состояние 59
+    '%'       сдвиг, и переход в состояние 60
+    '#'       сдвиг, и переход в состояние 61
+    '!'       сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 22 (exp)
+
+    Conflict between rule 22 and token WORD resolved as reduce (WORD < OR).
+    Conflict between rule 22 and token OR resolved as reduce (%left OR).
+    Conflict between rule 22 and token AND resolved as shift (OR < AND).
+    Conflict between rule 22 and token '<' resolved as shift (OR < '<').
+    Conflict between rule 22 and token '>' resolved as shift (OR < '>').
+    Conflict between rule 22 and token '=' resolved as shift (OR < '=').
+    Conflict between rule 22 and token AT_MOST resolved as shift (OR < AT_MOST).
+    Conflict between rule 22 and token AT_LEAST resolved as shift (OR < AT_LEAST).
+    Conflict between rule 22 and token NE resolved as shift (OR < NE).
+    Conflict between rule 22 and token ';' resolved as shift (OR < ';').
+    Conflict between rule 22 and token ',' resolved as shift (OR < ',').
+    Conflict between rule 22 and token '-' resolved as shift (OR < '-').
+    Conflict between rule 22 and token '+' resolved as shift (OR < '+').
+    Conflict between rule 22 and token '*' resolved as shift (OR < '*').
+    Conflict between rule 22 and token '/' resolved as shift (OR < '/').
+    Conflict between rule 22 and token '^' resolved as shift (OR < '^').
+    Conflict between rule 22 and token '$' resolved as shift (OR < '$').
+    Conflict between rule 22 and token '%' resolved as shift (OR < '%').
+    Conflict between rule 22 and token '#' resolved as shift (OR < '#').
+    Conflict between rule 22 and token '!' resolved as shift (OR < '!').
+
+
+State 73
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   23    | exp AND exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, ')']
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    '<'       сдвиг, и переход в состояние 46
+    '>'       сдвиг, и переход в состояние 47
+    '='       сдвиг, и переход в состояние 48
+    AT_MOST   сдвиг, и переход в состояние 49
+    AT_LEAST  сдвиг, и переход в состояние 50
+    NE        сдвиг, и переход в состояние 51
+    ';'       сдвиг, и переход в состояние 52
+    ','       сдвиг, и переход в состояние 53
+    '-'       сдвиг, и переход в состояние 54
+    '+'       сдвиг, и переход в состояние 55
+    '*'       сдвиг, и переход в состояние 56
+    '/'       сдвиг, и переход в состояние 57
+    '^'       сдвиг, и переход в состояние 58
+    '$'       сдвиг, и переход в состояние 59
+    '%'       сдвиг, и переход в состояние 60
+    '#'       сдвиг, и переход в состояние 61
+    '!'       сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 23 (exp)
+
+    Conflict between rule 23 and token WORD resolved as reduce (WORD < AND).
+    Conflict between rule 23 and token OR resolved as reduce (OR < AND).
+    Conflict between rule 23 and token AND resolved as reduce (%left AND).
+    Conflict between rule 23 and token '<' resolved as shift (AND < '<').
+    Conflict between rule 23 and token '>' resolved as shift (AND < '>').
+    Conflict between rule 23 and token '=' resolved as shift (AND < '=').
+    Conflict between rule 23 and token AT_MOST resolved as shift (AND < AT_MOST).
+    Conflict between rule 23 and token AT_LEAST resolved as shift (AND < AT_LEAST).
+    Conflict between rule 23 and token NE resolved as shift (AND < NE).
+    Conflict between rule 23 and token ';' resolved as shift (AND < ';').
+    Conflict between rule 23 and token ',' resolved as shift (AND < ',').
+    Conflict between rule 23 and token '-' resolved as shift (AND < '-').
+    Conflict between rule 23 and token '+' resolved as shift (AND < '+').
+    Conflict between rule 23 and token '*' resolved as shift (AND < '*').
+    Conflict between rule 23 and token '/' resolved as shift (AND < '/').
+    Conflict between rule 23 and token '^' resolved as shift (AND < '^').
+    Conflict between rule 23 and token '$' resolved as shift (AND < '$').
+    Conflict between rule 23 and token '%' resolved as shift (AND < '%').
+    Conflict between rule 23 and token '#' resolved as shift (AND < '#').
+    Conflict between rule 23 and token '!' resolved as shift (AND < '!').
+
+
+State 74
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   25    | exp '<' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ')']
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    ';'  сдвиг, и переход в состояние 52
+    ','  сдвиг, и переход в состояние 53
+    '-'  сдвиг, и переход в состояние 54
+    '+'  сдвиг, и переход в состояние 55
+    '*'  сдвиг, и переход в состояние 56
+    '/'  сдвиг, и переход в состояние 57
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 25 (exp)
+
+    Conflict between rule 25 and token WORD resolved as reduce (WORD < '<').
+    Conflict between rule 25 and token OR resolved as reduce (OR < '<').
+    Conflict between rule 25 and token AND resolved as reduce (AND < '<').
+    Conflict between rule 25 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 25 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 25 and token '=' resolved as reduce (%left '=').
+    Conflict between rule 25 and token AT_MOST resolved as reduce (%left AT_MOST).
+    Conflict between rule 25 and token AT_LEAST resolved as reduce (%left AT_LEAST).
+    Conflict between rule 25 and token NE resolved as reduce (%left NE).
+    Conflict between rule 25 and token ';' resolved as shift ('<' < ';').
+    Conflict between rule 25 and token ',' resolved as shift ('<' < ',').
+    Conflict between rule 25 and token '-' resolved as shift ('<' < '-').
+    Conflict between rule 25 and token '+' resolved as shift ('<' < '+').
+    Conflict between rule 25 and token '*' resolved as shift ('<' < '*').
+    Conflict between rule 25 and token '/' resolved as shift ('<' < '/').
+    Conflict between rule 25 and token '^' resolved as shift ('<' < '^').
+    Conflict between rule 25 and token '$' resolved as shift ('<' < '$').
+    Conflict between rule 25 and token '%' resolved as shift ('<' < '%').
+    Conflict between rule 25 and token '#' resolved as shift ('<' < '#').
+    Conflict between rule 25 and token '!' resolved as shift ('<' < '!').
+
+
+State 75
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   26    | exp '>' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ')']
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    ';'  сдвиг, и переход в состояние 52
+    ','  сдвиг, и переход в состояние 53
+    '-'  сдвиг, и переход в состояние 54
+    '+'  сдвиг, и переход в состояние 55
+    '*'  сдвиг, и переход в состояние 56
+    '/'  сдвиг, и переход в состояние 57
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 26 (exp)
+
+    Conflict between rule 26 and token WORD resolved as reduce (WORD < '>').
+    Conflict between rule 26 and token OR resolved as reduce (OR < '>').
+    Conflict between rule 26 and token AND resolved as reduce (AND < '>').
+    Conflict between rule 26 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 26 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 26 and token '=' resolved as reduce (%left '=').
+    Conflict between rule 26 and token AT_MOST resolved as reduce (%left AT_MOST).
+    Conflict between rule 26 and token AT_LEAST resolved as reduce (%left AT_LEAST).
+    Conflict between rule 26 and token NE resolved as reduce (%left NE).
+    Conflict between rule 26 and token ';' resolved as shift ('>' < ';').
+    Conflict between rule 26 and token ',' resolved as shift ('>' < ',').
+    Conflict between rule 26 and token '-' resolved as shift ('>' < '-').
+    Conflict between rule 26 and token '+' resolved as shift ('>' < '+').
+    Conflict between rule 26 and token '*' resolved as shift ('>' < '*').
+    Conflict between rule 26 and token '/' resolved as shift ('>' < '/').
+    Conflict between rule 26 and token '^' resolved as shift ('>' < '^').
+    Conflict between rule 26 and token '$' resolved as shift ('>' < '$').
+    Conflict between rule 26 and token '%' resolved as shift ('>' < '%').
+    Conflict between rule 26 and token '#' resolved as shift ('>' < '#').
+    Conflict between rule 26 and token '!' resolved as shift ('>' < '!').
+
+
+State 76
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   27    | exp '=' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ')']
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    ';'  сдвиг, и переход в состояние 52
+    ','  сдвиг, и переход в состояние 53
+    '-'  сдвиг, и переход в состояние 54
+    '+'  сдвиг, и переход в состояние 55
+    '*'  сдвиг, и переход в состояние 56
+    '/'  сдвиг, и переход в состояние 57
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 27 (exp)
+
+    Conflict between rule 27 and token WORD resolved as reduce (WORD < '=').
+    Conflict between rule 27 and token OR resolved as reduce (OR < '=').
+    Conflict between rule 27 and token AND resolved as reduce (AND < '=').
+    Conflict between rule 27 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 27 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 27 and token '=' resolved as reduce (%left '=').
+    Conflict between rule 27 and token AT_MOST resolved as reduce (%left AT_MOST).
+    Conflict between rule 27 and token AT_LEAST resolved as reduce (%left AT_LEAST).
+    Conflict between rule 27 and token NE resolved as reduce (%left NE).
+    Conflict between rule 27 and token ';' resolved as shift ('=' < ';').
+    Conflict between rule 27 and token ',' resolved as shift ('=' < ',').
+    Conflict between rule 27 and token '-' resolved as shift ('=' < '-').
+    Conflict between rule 27 and token '+' resolved as shift ('=' < '+').
+    Conflict between rule 27 and token '*' resolved as shift ('=' < '*').
+    Conflict between rule 27 and token '/' resolved as shift ('=' < '/').
+    Conflict between rule 27 and token '^' resolved as shift ('=' < '^').
+    Conflict between rule 27 and token '$' resolved as shift ('=' < '$').
+    Conflict between rule 27 and token '%' resolved as shift ('=' < '%').
+    Conflict between rule 27 and token '#' resolved as shift ('=' < '#').
+    Conflict between rule 27 and token '!' resolved as shift ('=' < '!').
+
+
+State 77
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   28    | exp AT_MOST exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ')']
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    ';'  сдвиг, и переход в состояние 52
+    ','  сдвиг, и переход в состояние 53
+    '-'  сдвиг, и переход в состояние 54
+    '+'  сдвиг, и переход в состояние 55
+    '*'  сдвиг, и переход в состояние 56
+    '/'  сдвиг, и переход в состояние 57
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 28 (exp)
+
+    Conflict between rule 28 and token WORD resolved as reduce (WORD < AT_MOST).
+    Conflict between rule 28 and token OR resolved as reduce (OR < AT_MOST).
+    Conflict between rule 28 and token AND resolved as reduce (AND < AT_MOST).
+    Conflict between rule 28 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 28 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 28 and token '=' resolved as reduce (%left '=').
+    Conflict between rule 28 and token AT_MOST resolved as reduce (%left AT_MOST).
+    Conflict between rule 28 and token AT_LEAST resolved as reduce (%left AT_LEAST).
+    Conflict between rule 28 and token NE resolved as reduce (%left NE).
+    Conflict between rule 28 and token ';' resolved as shift (AT_MOST < ';').
+    Conflict between rule 28 and token ',' resolved as shift (AT_MOST < ',').
+    Conflict between rule 28 and token '-' resolved as shift (AT_MOST < '-').
+    Conflict between rule 28 and token '+' resolved as shift (AT_MOST < '+').
+    Conflict between rule 28 and token '*' resolved as shift (AT_MOST < '*').
+    Conflict between rule 28 and token '/' resolved as shift (AT_MOST < '/').
+    Conflict between rule 28 and token '^' resolved as shift (AT_MOST < '^').
+    Conflict between rule 28 and token '$' resolved as shift (AT_MOST < '$').
+    Conflict between rule 28 and token '%' resolved as shift (AT_MOST < '%').
+    Conflict between rule 28 and token '#' resolved as shift (AT_MOST < '#').
+    Conflict between rule 28 and token '!' resolved as shift (AT_MOST < '!').
+
+
+State 78
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   29    | exp AT_LEAST exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ')']
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    ';'  сдвиг, и переход в состояние 52
+    ','  сдвиг, и переход в состояние 53
+    '-'  сдвиг, и переход в состояние 54
+    '+'  сдвиг, и переход в состояние 55
+    '*'  сдвиг, и переход в состояние 56
+    '/'  сдвиг, и переход в состояние 57
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 29 (exp)
+
+    Conflict between rule 29 and token WORD resolved as reduce (WORD < AT_LEAST).
+    Conflict between rule 29 and token OR resolved as reduce (OR < AT_LEAST).
+    Conflict between rule 29 and token AND resolved as reduce (AND < AT_LEAST).
+    Conflict between rule 29 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 29 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 29 and token '=' resolved as reduce (%left '=').
+    Conflict between rule 29 and token AT_MOST resolved as reduce (%left AT_MOST).
+    Conflict between rule 29 and token AT_LEAST resolved as reduce (%left AT_LEAST).
+    Conflict between rule 29 and token NE resolved as reduce (%left NE).
+    Conflict between rule 29 and token ';' resolved as shift (AT_LEAST < ';').
+    Conflict between rule 29 and token ',' resolved as shift (AT_LEAST < ',').
+    Conflict between rule 29 and token '-' resolved as shift (AT_LEAST < '-').
+    Conflict between rule 29 and token '+' resolved as shift (AT_LEAST < '+').
+    Conflict between rule 29 and token '*' resolved as shift (AT_LEAST < '*').
+    Conflict between rule 29 and token '/' resolved as shift (AT_LEAST < '/').
+    Conflict between rule 29 and token '^' resolved as shift (AT_LEAST < '^').
+    Conflict between rule 29 and token '$' resolved as shift (AT_LEAST < '$').
+    Conflict between rule 29 and token '%' resolved as shift (AT_LEAST < '%').
+    Conflict between rule 29 and token '#' resolved as shift (AT_LEAST < '#').
+    Conflict between rule 29 and token '!' resolved as shift (AT_LEAST < '!').
+
+
+State 79
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   30    | exp NE exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ')']
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    ';'  сдвиг, и переход в состояние 52
+    ','  сдвиг, и переход в состояние 53
+    '-'  сдвиг, и переход в состояние 54
+    '+'  сдвиг, и переход в состояние 55
+    '*'  сдвиг, и переход в состояние 56
+    '/'  сдвиг, и переход в состояние 57
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 30 (exp)
+
+    Conflict between rule 30 and token WORD resolved as reduce (WORD < NE).
+    Conflict between rule 30 and token OR resolved as reduce (OR < NE).
+    Conflict between rule 30 and token AND resolved as reduce (AND < NE).
+    Conflict between rule 30 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 30 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 30 and token '=' resolved as reduce (%left '=').
+    Conflict between rule 30 and token AT_MOST resolved as reduce (%left AT_MOST).
+    Conflict between rule 30 and token AT_LEAST resolved as reduce (%left AT_LEAST).
+    Conflict between rule 30 and token NE resolved as reduce (%left NE).
+    Conflict between rule 30 and token ';' resolved as shift (NE < ';').
+    Conflict between rule 30 and token ',' resolved as shift (NE < ',').
+    Conflict between rule 30 and token '-' resolved as shift (NE < '-').
+    Conflict between rule 30 and token '+' resolved as shift (NE < '+').
+    Conflict between rule 30 and token '*' resolved as shift (NE < '*').
+    Conflict between rule 30 and token '/' resolved as shift (NE < '/').
+    Conflict between rule 30 and token '^' resolved as shift (NE < '^').
+    Conflict between rule 30 and token '$' resolved as shift (NE < '$').
+    Conflict between rule 30 and token '%' resolved as shift (NE < '%').
+    Conflict between rule 30 and token '#' resolved as shift (NE < '#').
+    Conflict between rule 30 and token '!' resolved as shift (NE < '!').
+
+
+State 80
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   33    | exp ';' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ';', ')']
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    ','  сдвиг, и переход в состояние 53
+    '-'  сдвиг, и переход в состояние 54
+    '+'  сдвиг, и переход в состояние 55
+    '*'  сдвиг, и переход в состояние 56
+    '/'  сдвиг, и переход в состояние 57
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 33 (exp)
+
+    Conflict between rule 33 and token WORD resolved as reduce (WORD < ';').
+    Conflict between rule 33 and token OR resolved as reduce (OR < ';').
+    Conflict between rule 33 and token AND resolved as reduce (AND < ';').
+    Conflict between rule 33 and token '<' resolved as reduce ('<' < ';').
+    Conflict between rule 33 and token '>' resolved as reduce ('>' < ';').
+    Conflict between rule 33 and token '=' resolved as reduce ('=' < ';').
+    Conflict between rule 33 and token AT_MOST resolved as reduce (AT_MOST < ';').
+    Conflict between rule 33 and token AT_LEAST resolved as reduce (AT_LEAST < ';').
+    Conflict between rule 33 and token NE resolved as reduce (NE < ';').
+    Conflict between rule 33 and token ';' resolved as reduce (%left ';').
+    Conflict between rule 33 and token ',' resolved as shift (';' < ',').
+    Conflict between rule 33 and token '-' resolved as shift (';' < '-').
+    Conflict between rule 33 and token '+' resolved as shift (';' < '+').
+    Conflict between rule 33 and token '*' resolved as shift (';' < '*').
+    Conflict between rule 33 and token '/' resolved as shift (';' < '/').
+    Conflict between rule 33 and token '^' resolved as shift (';' < '^').
+    Conflict between rule 33 and token '$' resolved as shift (';' < '$').
+    Conflict between rule 33 and token '%' resolved as shift (';' < '%').
+    Conflict between rule 33 and token '#' resolved as shift (';' < '#').
+    Conflict between rule 33 and token '!' resolved as shift (';' < '!').
+
+
+State 81
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   32    | exp ',' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ';', ',', ')']
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    '-'  сдвиг, и переход в состояние 54
+    '+'  сдвиг, и переход в состояние 55
+    '*'  сдвиг, и переход в состояние 56
+    '/'  сдвиг, и переход в состояние 57
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 32 (exp)
+
+    Conflict between rule 32 and token WORD resolved as reduce (WORD < ',').
+    Conflict between rule 32 and token OR resolved as reduce (OR < ',').
+    Conflict between rule 32 and token AND resolved as reduce (AND < ',').
+    Conflict between rule 32 and token '<' resolved as reduce ('<' < ',').
+    Conflict between rule 32 and token '>' resolved as reduce ('>' < ',').
+    Conflict between rule 32 and token '=' resolved as reduce ('=' < ',').
+    Conflict between rule 32 and token AT_MOST resolved as reduce (AT_MOST < ',').
+    Conflict between rule 32 and token AT_LEAST resolved as reduce (AT_LEAST < ',').
+    Conflict between rule 32 and token NE resolved as reduce (NE < ',').
+    Conflict between rule 32 and token ';' resolved as reduce (';' < ',').
+    Conflict between rule 32 and token ',' resolved as reduce (%left ',').
+    Conflict between rule 32 and token '-' resolved as shift (',' < '-').
+    Conflict between rule 32 and token '+' resolved as shift (',' < '+').
+    Conflict between rule 32 and token '*' resolved as shift (',' < '*').
+    Conflict between rule 32 and token '/' resolved as shift (',' < '/').
+    Conflict between rule 32 and token '^' resolved as shift (',' < '^').
+    Conflict between rule 32 and token '$' resolved as shift (',' < '$').
+    Conflict between rule 32 and token '%' resolved as shift (',' < '%').
+    Conflict between rule 32 and token '#' resolved as shift (',' < '#').
+    Conflict between rule 32 and token '!' resolved as shift (',' < '!').
+
+
+State 82
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   35    | exp '-' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ';', ',', '-', '+', ')']
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    '*'  сдвиг, и переход в состояние 56
+    '/'  сдвиг, и переход в состояние 57
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 35 (exp)
+
+    Conflict between rule 35 and token WORD resolved as reduce (WORD < '-').
+    Conflict between rule 35 and token OR resolved as reduce (OR < '-').
+    Conflict between rule 35 and token AND resolved as reduce (AND < '-').
+    Conflict between rule 35 and token '<' resolved as reduce ('<' < '-').
+    Conflict between rule 35 and token '>' resolved as reduce ('>' < '-').
+    Conflict between rule 35 and token '=' resolved as reduce ('=' < '-').
+    Conflict between rule 35 and token AT_MOST resolved as reduce (AT_MOST < '-').
+    Conflict between rule 35 and token AT_LEAST resolved as reduce (AT_LEAST < '-').
+    Conflict between rule 35 and token NE resolved as reduce (NE < '-').
+    Conflict between rule 35 and token ';' resolved as reduce (';' < '-').
+    Conflict between rule 35 and token ',' resolved as reduce (',' < '-').
+    Conflict between rule 35 and token '-' resolved as reduce (%left '-').
+    Conflict between rule 35 and token '+' resolved as reduce (%left '+').
+    Conflict between rule 35 and token '*' resolved as shift ('-' < '*').
+    Conflict between rule 35 and token '/' resolved as shift ('-' < '/').
+    Conflict between rule 35 and token '^' resolved as shift ('-' < '^').
+    Conflict between rule 35 and token '$' resolved as shift ('-' < '$').
+    Conflict between rule 35 and token '%' resolved as shift ('-' < '%').
+    Conflict between rule 35 and token '#' resolved as shift ('-' < '#').
+    Conflict between rule 35 and token '!' resolved as shift ('-' < '!').
+
+
+State 83
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   34    | exp '+' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ';', ',', '-', '+', ')']
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    '*'  сдвиг, и переход в состояние 56
+    '/'  сдвиг, и переход в состояние 57
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 34 (exp)
+
+    Conflict between rule 34 and token WORD resolved as reduce (WORD < '+').
+    Conflict between rule 34 and token OR resolved as reduce (OR < '+').
+    Conflict between rule 34 and token AND resolved as reduce (AND < '+').
+    Conflict between rule 34 and token '<' resolved as reduce ('<' < '+').
+    Conflict between rule 34 and token '>' resolved as reduce ('>' < '+').
+    Conflict between rule 34 and token '=' resolved as reduce ('=' < '+').
+    Conflict between rule 34 and token AT_MOST resolved as reduce (AT_MOST < '+').
+    Conflict between rule 34 and token AT_LEAST resolved as reduce (AT_LEAST < '+').
+    Conflict between rule 34 and token NE resolved as reduce (NE < '+').
+    Conflict between rule 34 and token ';' resolved as reduce (';' < '+').
+    Conflict between rule 34 and token ',' resolved as reduce (',' < '+').
+    Conflict between rule 34 and token '-' resolved as reduce (%left '-').
+    Conflict between rule 34 and token '+' resolved as reduce (%left '+').
+    Conflict between rule 34 and token '*' resolved as shift ('+' < '*').
+    Conflict between rule 34 and token '/' resolved as shift ('+' < '/').
+    Conflict between rule 34 and token '^' resolved as shift ('+' < '^').
+    Conflict between rule 34 and token '$' resolved as shift ('+' < '$').
+    Conflict between rule 34 and token '%' resolved as shift ('+' < '%').
+    Conflict between rule 34 and token '#' resolved as shift ('+' < '#').
+    Conflict between rule 34 and token '!' resolved as shift ('+' < '!').
+
+
+State 84
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   36    | exp '*' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ';', ',', '-', '+', '*', '/', ')']
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 36 (exp)
+
+    Conflict between rule 36 and token WORD resolved as reduce (WORD < '*').
+    Conflict between rule 36 and token OR resolved as reduce (OR < '*').
+    Conflict between rule 36 and token AND resolved as reduce (AND < '*').
+    Conflict between rule 36 and token '<' resolved as reduce ('<' < '*').
+    Conflict between rule 36 and token '>' resolved as reduce ('>' < '*').
+    Conflict between rule 36 and token '=' resolved as reduce ('=' < '*').
+    Conflict between rule 36 and token AT_MOST resolved as reduce (AT_MOST < '*').
+    Conflict between rule 36 and token AT_LEAST resolved as reduce (AT_LEAST < '*').
+    Conflict between rule 36 and token NE resolved as reduce (NE < '*').
+    Conflict between rule 36 and token ';' resolved as reduce (';' < '*').
+    Conflict between rule 36 and token ',' resolved as reduce (',' < '*').
+    Conflict between rule 36 and token '-' resolved as reduce ('-' < '*').
+    Conflict between rule 36 and token '+' resolved as reduce ('+' < '*').
+    Conflict between rule 36 and token '*' resolved as reduce (%left '*').
+    Conflict between rule 36 and token '/' resolved as reduce (%left '/').
+    Conflict between rule 36 and token '^' resolved as shift ('*' < '^').
+    Conflict between rule 36 and token '$' resolved as shift ('*' < '$').
+    Conflict between rule 36 and token '%' resolved as shift ('*' < '%').
+    Conflict between rule 36 and token '#' resolved as shift ('*' < '#').
+    Conflict between rule 36 and token '!' resolved as shift ('*' < '!').
+
+
+State 85
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   37    | exp '/' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ';', ',', '-', '+', '*', '/', ')']
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    '^'  сдвиг, и переход в состояние 58
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 37 (exp)
+
+    Conflict between rule 37 and token WORD resolved as reduce (WORD < '/').
+    Conflict between rule 37 and token OR resolved as reduce (OR < '/').
+    Conflict between rule 37 and token AND resolved as reduce (AND < '/').
+    Conflict between rule 37 and token '<' resolved as reduce ('<' < '/').
+    Conflict between rule 37 and token '>' resolved as reduce ('>' < '/').
+    Conflict between rule 37 and token '=' resolved as reduce ('=' < '/').
+    Conflict between rule 37 and token AT_MOST resolved as reduce (AT_MOST < '/').
+    Conflict between rule 37 and token AT_LEAST resolved as reduce (AT_LEAST < '/').
+    Conflict between rule 37 and token NE resolved as reduce (NE < '/').
+    Conflict between rule 37 and token ';' resolved as reduce (';' < '/').
+    Conflict between rule 37 and token ',' resolved as reduce (',' < '/').
+    Conflict between rule 37 and token '-' resolved as reduce ('-' < '/').
+    Conflict between rule 37 and token '+' resolved as reduce ('+' < '/').
+    Conflict between rule 37 and token '*' resolved as reduce (%left '*').
+    Conflict between rule 37 and token '/' resolved as reduce (%left '/').
+    Conflict between rule 37 and token '^' resolved as shift ('/' < '^').
+    Conflict between rule 37 and token '$' resolved as shift ('/' < '$').
+    Conflict between rule 37 and token '%' resolved as shift ('/' < '%').
+    Conflict between rule 37 and token '#' resolved as shift ('/' < '#').
+    Conflict between rule 37 and token '!' resolved as shift ('/' < '!').
+
+
+State 86
+
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   38    | exp '^' exp •  [$end, THEN, RETURN, '\n', '|', ':', WORD, OR, AND, '<', '>', '=', AT_MOST, AT_LEAST, NE, ';', ',', '-', '+', '*', '/', '^', ')']
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    '$'  сдвиг, и переход в состояние 59
+    '%'  сдвиг, и переход в состояние 60
+    '#'  сдвиг, и переход в состояние 61
+    '!'  сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 38 (exp)
+
+    Conflict between rule 38 and token WORD resolved as reduce (WORD < '^').
+    Conflict between rule 38 and token OR resolved as reduce (OR < '^').
+    Conflict between rule 38 and token AND resolved as reduce (AND < '^').
+    Conflict between rule 38 and token '<' resolved as reduce ('<' < '^').
+    Conflict between rule 38 and token '>' resolved as reduce ('>' < '^').
+    Conflict between rule 38 and token '=' resolved as reduce ('=' < '^').
+    Conflict between rule 38 and token AT_MOST resolved as reduce (AT_MOST < '^').
+    Conflict between rule 38 and token AT_LEAST resolved as reduce (AT_LEAST < '^').
+    Conflict between rule 38 and token NE resolved as reduce (NE < '^').
+    Conflict between rule 38 and token ';' resolved as reduce (';' < '^').
+    Conflict between rule 38 and token ',' resolved as reduce (',' < '^').
+    Conflict between rule 38 and token '-' resolved as reduce ('-' < '^').
+    Conflict between rule 38 and token '+' resolved as reduce ('+' < '^').
+    Conflict between rule 38 and token '*' resolved as reduce ('*' < '^').
+    Conflict between rule 38 and token '/' resolved as reduce ('/' < '^').
+    Conflict between rule 38 and token '^' resolved as reduce (%left '^').
+    Conflict between rule 38 and token '$' resolved as shift ('^' < '$').
+    Conflict between rule 38 and token '%' resolved as shift ('^' < '%').
+    Conflict between rule 38 and token '#' resolved as shift ('^' < '#').
+    Conflict between rule 38 and token '!' resolved as shift ('^' < '!').
+
+
+State 87
+
+   12 lines: FOR A '=' exp •  [$end, RETURN, '\n']
+   22 exp: exp • OR exp
+   23    | exp • AND exp
+   25    | exp • '<' exp
+   26    | exp • '>' exp
+   27    | exp • '=' exp
+   28    | exp • AT_MOST exp
+   29    | exp • AT_LEAST exp
+   30    | exp • NE exp
+   31    | exp • WORD exp
+   32    | exp • ',' exp
+   33    | exp • ';' exp
+   34    | exp • '+' exp
+   35    | exp • '-' exp
+   36    | exp • '*' exp
+   37    | exp • '/' exp
+   38    | exp • '^' exp
+   40    | exp • '$'
+   41    | exp • '%'
+   42    | exp • '!'
+   43    | exp • '#'
+   44    | exp • WORD
+
+    WORD      сдвиг, и переход в состояние 43
+    OR        сдвиг, и переход в состояние 44
+    AND       сдвиг, и переход в состояние 45
+    '<'       сдвиг, и переход в состояние 46
+    '>'       сдвиг, и переход в состояние 47
+    '='       сдвиг, и переход в состояние 48
+    AT_MOST   сдвиг, и переход в состояние 49
+    AT_LEAST  сдвиг, и переход в состояние 50
+    NE        сдвиг, и переход в состояние 51
+    ';'       сдвиг, и переход в состояние 52
+    ','       сдвиг, и переход в состояние 53
+    '-'       сдвиг, и переход в состояние 54
+    '+'       сдвиг, и переход в состояние 55
+    '*'       сдвиг, и переход в состояние 56
+    '/'       сдвиг, и переход в состояние 57
+    '^'       сдвиг, и переход в состояние 58
+    '$'       сдвиг, и переход в состояние 59
+    '%'       сдвиг, и переход в состояние 60
+    '#'       сдвиг, и переход в состояние 61
+    '!'       сдвиг, и переход в состояние 62
+
+    $default  вывод с использованием правила 12 (lines)
+
+
+State 88
+
+   16 next: next • ',' next
+   16     | next ',' next •  [$end, RETURN, '\n', ',']
+
+    $default  вывод с использованием правила 16 (next)
+
+    Conflict between rule 16 and token ',' resolved as reduce (%left ',').
