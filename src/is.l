@@ -7,6 +7,7 @@
 #include "is.tab.h"
 
 
+int yystartrule;
 int yycolumn = 1;
 
 static int new_yylval(int op) {
@@ -41,6 +42,12 @@ int 	[0-9]+
 string  \"([^\"]|\\\")*"\""
 
 %%
+
+							if(yystartrule) {
+								int yystartrule_prev = yystartrule;
+								yystartrule = 0;
+								return yystartrule_prev;
+							}
 
 [a-zA-Z][a-zA-Z_0-9]*		{
 								if(yyleng == 1) return new_yylval(A);

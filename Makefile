@@ -7,7 +7,7 @@ objects := $(patsubst src/%.c,o/%.o,$(wildcard src/*.c))
 
 all: is
 	#./is < one-page-example.is
-	./is < x.is
+	./is bin/test-issa TestIssa
 
 is: o/is.l.o o/is.y.o $(objects)
 	gcc -o $@ $^

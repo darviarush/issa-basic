@@ -2,64 +2,84 @@
 #include <stdlib.h>
 
 #include "gen_code_c.h"
+#include "node.h"
 #include "../o/is.tab.h"
+
+static FILE* output;
 
 
 void gen_code_c(node* n) {
 
 	switch(n->op) {
-		
+
 		case '\n':
 			if(n->left) gen_code_c(n->left);
-			printf("\n");
-			if(n->right) gen_code_c(n->right), printf(";");
+			fprintf(output, "\n");
+			if(n->right) gen_code_c(n->right), fprintf(output, ";");
 			break;
 		case ':':
 			gen_code_c(n->left);
-			printf("; ");
+			fprintf(output, "; ");
 			gen_code_c(n->right);
 			break;
 		case IF:
-			printf("if(");
+			fprintf(output, "if(");
 			gen_code_c(n->left);
-			printf(") {");
+			fprintf(output, ") {");
 			gen_code_c(n->right);
-			printf("}");
+			fprintf(output, "}");
 			break;
 		case '=':
 			gen_code_c(n->left);
-			printf(" = ");
+			fprintf(output, " = ");
 			gen_code_c(n->right);
 			break;
 		case A:
-			printf("%s", n->text);
+			fprintf(output, "%s", n->text);
 			break;
 		case INT:
-			printf("%s", n->text);
+			fprintf(output, "%s", n->text);
 			break;
 		case NUM:
-			printf("%s", n->text);
+			fprintf(output, "%s", n->text);
 			break;
 		case STRING:
-			printf("%s", n->text);
+			fprintf(output, "%s", n->text);
 			break;
 		case U:
-			printf("%s(", n->text);
+			fprintf(output, "%s(", n->text);
 			gen_code_c(n->left);
-			printf(")");
+			fprintf(output, ")");
 			break;
 		case WORD:
-			printf("%s(", n->text);
+			fprintf(output, "%s(", n->text);
 			gen_code_c(n->left);
-			printf(", ");
+			fprintf(output, ", ");
 			gen_code_c(n->right);
-			printf(")");
+			fprintf(output, ")");
 			break;
 		default:
 			if(32 <= n->op && n->op < 127)
-				fprintf(stderr, "op = `%c`? Not exists!\n", n->op);
+				ffprintf(output, stderr, "op = `%c`? Not exists!\n", n->op);
 			else 
-				fprintf(stderr, "op = `%i`? Not exists!\n", n->op);
+				ffprintf(output, stderr, "op = #%i? Not exists!\n", n->op);
 			exit(2);
 	}
+}
+
+
+# открывает файл
+FILE* openfile(char* path, char* mode) {
+	FILE* f = fopen(path, mode);
+	if(!f) {
+		fprintf(stderr, "fopen(%s, %s): %s\n", path, mode, strerr(errno));
+		exit(errno);
+	}
+	return f;
+}
+
+# генерирует код для программы
+void gen_code_c_prog(char* outfile, char* class) {
+	output = openfile(outfile, "w");	
+	
 }

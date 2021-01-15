@@ -499,6 +499,7 @@ char *yytext;
 #include "is.tab.h"
 
 
+int yystartrule;
 int yycolumn = 1;
 
 static int new_yylval(int op) {
@@ -523,8 +524,8 @@ static int new_yylval(int op) {
 
 #define RET(A, B)	if(strcmp(yytext, A) == 0) return B
 
-#line 526 "o/lex.yy.c"
 #line 527 "o/lex.yy.c"
+#line 528 "o/lex.yy.c"
 
 #define INITIAL 0
 
@@ -741,10 +742,17 @@ YY_DECL
 		}
 
 	{
-#line 43 "src/is.l"
+#line 44 "src/is.l"
 
 
-#line 747 "o/lex.yy.c"
+#line 47 "src/is.l"
+							if(yystartrule) {
+								int yystartrule_prev = yystartrule;
+								yystartrule = 0;
+								return yystartrule_prev;
+							}
+
+#line 755 "o/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -813,7 +821,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 45 "src/is.l"
+#line 53 "src/is.l"
 {
 								if(yyleng == 1) return new_yylval(A);
 
@@ -837,65 +845,65 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 64 "src/is.l"
+#line 72 "src/is.l"
 return new_yylval(STRING);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 65 "src/is.l"
+#line 73 "src/is.l"
 return new_yylval(NUM);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 66 "src/is.l"
+#line 74 "src/is.l"
 return new_yylval(INT);
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 68 "src/is.l"
+#line 76 "src/is.l"
 yycolumn += yyleng; return AT_MOST;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 69 "src/is.l"
+#line 77 "src/is.l"
 yycolumn += yyleng; return AT_LEAST;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 70 "src/is.l"
+#line 78 "src/is.l"
 yycolumn += yyleng; return NE;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 71 "src/is.l"
+#line 79 "src/is.l"
 yycolumn += yyleng; return *yytext;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 73 "src/is.l"
+#line 81 "src/is.l"
 yycolumn += yyleng;
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 74 "src/is.l"
+#line 82 "src/is.l"
 { new_yylval('\n'); yycolumn = 1; return '\n'; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 75 "src/is.l"
+#line 83 "src/is.l"
 fprintf(stderr, "%i:%i Undefined simbol `%s`\n", yylineno, yycolumn, yytext); exit(10);
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 76 "src/is.l"
+#line 84 "src/is.l"
 return 0;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 77 "src/is.l"
+#line 85 "src/is.l"
 ECHO;
 	YY_BREAK
-#line 898 "o/lex.yy.c"
+#line 906 "o/lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1910,6 +1918,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 77 "src/is.l"
+#line 85 "src/is.l"
 
 

@@ -54,24 +54,27 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    A = 258,                       /* A  */
-    INT = 259,                     /* INT  */
-    NUM = 260,                     /* NUM  */
-    STRING = 261,                  /* STRING  */
-    IF = 262,                      /* IF  */
-    THEN = 263,                    /* THEN  */
-    RETURN = 264,                  /* RETURN  */
-    FOR = 265,                     /* FOR  */
-    NEXT = 266,                    /* NEXT  */
-    WORD = 267,                    /* WORD  */
-    OR = 268,                      /* OR  */
-    AND = 269,                     /* AND  */
-    NOT = 270,                     /* NOT  */
-    AT_MOST = 271,                 /* AT_MOST  */
-    AT_LEAST = 272,                /* AT_LEAST  */
-    NE = 273,                      /* NE  */
-    U = 274,                       /* U  */
-    UMETHOD = 275                  /* UMETHOD  */
+    METHOD = 258,                  /* METHOD  */
+    LINES = 259,                   /* LINES  */
+    EXP = 260,                     /* EXP  */
+    A = 261,                       /* A  */
+    INT = 262,                     /* INT  */
+    NUM = 263,                     /* NUM  */
+    STRING = 264,                  /* STRING  */
+    IF = 265,                      /* IF  */
+    THEN = 266,                    /* THEN  */
+    RETURN = 267,                  /* RETURN  */
+    FOR = 268,                     /* FOR  */
+    NEXT = 269,                    /* NEXT  */
+    WORD = 270,                    /* WORD  */
+    OR = 271,                      /* OR  */
+    AND = 272,                     /* AND  */
+    NOT = 273,                     /* NOT  */
+    AT_MOST = 274,                 /* AT_MOST  */
+    AT_LEAST = 275,                /* AT_LEAST  */
+    NE = 276,                      /* NE  */
+    U = 277,                       /* U  */
+    UMETHOD = 278                  /* UMETHOD  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

@@ -6,7 +6,6 @@
 #include "../src/node.h"
 
 extern int yylex();
-extern int yyparse();
 extern FILE* yyin;
 
 void yyerror(const char* s);
@@ -19,6 +18,7 @@ node* yyres = NULL;
 %define parse.error verbose
 
 
+%token		METHOD LINES EXP
 %token  	A INT NUM STRING
 %token		IF THEN
 %token		RETURN
@@ -45,7 +45,14 @@ node* yyres = NULL;
 
 %%
 
-start:	signature '\n' lines ret { yyres = op_node('\f', $1, NULL, $3); }
+start: METHOD method 		{ yyres = $2; }
+		| LINES lines 		{ yyres = $2; }
+		| EXP exp 			{ yyres = $2; }
+;
+
+
+method:	signature '\n' lines ret { 
+	if(!$4) $$ = op_node('\f', $1, NULL, $3); }
 ;
 
 ret:	RETURN exp			{ $$ = u_node(RETURN, $2, NULL); }
@@ -120,3 +127,44 @@ exp:	exp OR exp			{ $$ = op_node(WORD, $1, "or", $3); }
 		| STRING 			{ $$ = $1; }
 ;
 %%
+
+extern char* yytext;
+extern int yylineno;
+extern int yycolumn;
+extern node* yyres;
+extern int yystartrule;
+extern FILE* yyin;
+
+int yywrap() {
+	return 1;
+}
+
+void yyerror(char const *s) {
+	fprintf(stderr, "%i:%i %s on `%s`\n", 
+		yylineno,
+		yycolumn,	// last_line last_column
+		s,
+		yytext);
+	exit(1);
+}
+
+node* parse_method(FILE* f) {
+	yystartrule = METHOD;
+	yyin = f;
+	yyparse();
+	return yyret;
+}
+
+node* parse_lines(FILE* f) {
+	yystartrule = LINES;
+	yyin = f;
+	yyparse();
+	return yyret;
+}
+
+node* parse_ext(FILE* f) {
+	yystartrule = EXT;
+	yyin = f;
+	yyparse();
+	return yyret;
+}
