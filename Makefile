@@ -7,6 +7,7 @@ objects := $(patsubst src/%.c,o/%.o,$(wildcard src/*.c))
 
 all: is
 	#./is < one-page-example.is
+	#strace ./is bin/test-issa TestIssa
 	./is bin/test-issa TestIssa
 
 is: o/is.l.o o/is.y.o $(objects)

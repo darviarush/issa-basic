@@ -2,6 +2,7 @@
 
 #define _GNU_SOURCE
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../src/node.h"
 
@@ -51,8 +52,10 @@ start: METHOD method 		{ yyres = $2; }
 ;
 
 
-method:	signature '\n' lines ret { 
-	if(!$4) $$ = op_node('\f', $1, NULL, $3); }
+method:	signature '\n' lines ret {
+		if(!$4) $$ = op_node('\f', $1, NULL, $3);
+		else $$ = op_node('\f', $1, NULL, op_node('\r', $3, NULL, $4));
+	}
 ;
 
 ret:	RETURN exp			{ $$ = u_node(RETURN, $2, NULL); }
@@ -63,12 +66,12 @@ signature: WORD				{ $$ = $1; }
 		| arguments 		{ $$ = $1; }
 ;
 
-arguments: argument arguments	{ $$ = op_node(',', $1, NULL, $2); }
+arguments: argument arguments	{ $$ = $1; $1->right = $2; }
 		| argument 				{ $$ = $1; }
 ;
 
-argument: WORD A 			{ $$ = op_node('\a', $1, NULL, $2); }
-		| WORD '&' A		{ $$ = op_node('\b', $1, NULL, $3); }
+argument: WORD A 			{ $$ = u_node('\a', $2, $1->text); }
+		| WORD '&' A		{ $$ = u_node('\b', $2, $1->text); }
 ;
 
 lines:	lines '\n' lines	{ $$ = $1 && $3? op_node('\n', $1, NULL, $3):
@@ -86,8 +89,7 @@ next:	next ',' next 		{ $$ = op_node(',', $1, NULL, $3); }
 		| A 				{ $$ = $1; }
 ;
 
-stmt:	
-		stmt '|' stmt		{ $$ = op_node(WORD, $1, "OR", $3); }
+stmt:	stmt '|' stmt		{ $$ = op_node(WORD, $1, "OR", $3); }
 		| stmt ':' stmt		{ $$ = op_node(':', $1, NULL, $3); }
 		| A '=' exp			{ $$ = op_node('=', $1, NULL, $3); }
 		| WORD exp			{ $$ = op_node('=', $1, NULL, $2); }
@@ -148,23 +150,23 @@ void yyerror(char const *s) {
 	exit(1);
 }
 
-node* parse_method(FILE* f) {
+node* yy_parse_method(FILE* f) {
 	yystartrule = METHOD;
 	yyin = f;
 	yyparse();
-	return yyret;
+	return yyres;
 }
 
-node* parse_lines(FILE* f) {
+node* yy_parse_lines(FILE* f) {
 	yystartrule = LINES;
 	yyin = f;
 	yyparse();
-	return yyret;
+	return yyres;
 }
 
 node* parse_ext(FILE* f) {
-	yystartrule = EXT;
+	yystartrule = EXP;
 	yyin = f;
 	yyparse();
-	return yyret;
+	return yyres;
 }

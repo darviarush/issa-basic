@@ -72,6 +72,7 @@
 
 #define _GNU_SOURCE
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../src/node.h"
 
@@ -83,7 +84,7 @@ void yyerror(const char* s);
 node* yyres = NULL;
 
 
-#line 87 "o/is.tab.c"
+#line 88 "o/is.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -533,14 +534,14 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    48,    48,    49,    50,    54,    58,    59,    62,    63,
-      66,    67,    70,    71,    74,    78,    79,    80,    81,    82,
-      85,    86,    90,    91,    92,    93,    96,    97,    98,   100,
-     101,   102,   103,   104,   105,   108,   109,   110,   112,   113,
-     114,   115,   116,   117,   118,   119,   120,   121,   122,   123,
-     124,   125,   126,   127
+       0,    49,    49,    50,    51,    55,    61,    62,    65,    66,
+      69,    70,    73,    74,    77,    81,    82,    83,    84,    85,
+      88,    89,    92,    93,    94,    95,    98,    99,   100,   102,
+     103,   104,   105,   106,   107,   110,   111,   112,   114,   115,
+     116,   117,   118,   119,   120,   121,   122,   123,   124,   125,
+     126,   127,   128,   129
 };
 #endif
 
@@ -1478,323 +1479,325 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* start: METHOD method  */
-#line 48 "src/is.y"
+#line 49 "src/is.y"
                                 { yyres = yyvsp[0]; }
-#line 1484 "o/is.tab.c"
+#line 1485 "o/is.tab.c"
     break;
 
   case 3: /* start: LINES lines  */
-#line 49 "src/is.y"
+#line 50 "src/is.y"
                                         { yyres = yyvsp[0]; }
-#line 1490 "o/is.tab.c"
+#line 1491 "o/is.tab.c"
     break;
 
   case 4: /* start: EXP exp  */
-#line 50 "src/is.y"
+#line 51 "src/is.y"
                                                 { yyres = yyvsp[0]; }
-#line 1496 "o/is.tab.c"
+#line 1497 "o/is.tab.c"
     break;
 
   case 5: /* method: signature '\n' lines ret  */
-#line 54 "src/is.y"
-                                 { 
-	if(!yyvsp[0]) yyval = op_node('\f', yyvsp[-3], NULL, yyvsp[-1]); }
-#line 1503 "o/is.tab.c"
+#line 55 "src/is.y"
+                                 {
+		if(!yyvsp[0]) yyval = op_node('\f', yyvsp[-3], NULL, yyvsp[-1]);
+		else yyval = op_node('\f', yyvsp[-3], NULL, op_node('\r', yyvsp[-1], NULL, yyvsp[0]));
+	}
+#line 1506 "o/is.tab.c"
     break;
 
   case 6: /* ret: RETURN exp  */
-#line 58 "src/is.y"
+#line 61 "src/is.y"
                                         { yyval = u_node(RETURN, yyvsp[0], NULL); }
-#line 1509 "o/is.tab.c"
+#line 1512 "o/is.tab.c"
     break;
 
   case 7: /* ret: %empty  */
-#line 59 "src/is.y"
+#line 62 "src/is.y"
                                         { yyval = NULL; }
-#line 1515 "o/is.tab.c"
+#line 1518 "o/is.tab.c"
     break;
 
   case 8: /* signature: WORD  */
-#line 62 "src/is.y"
+#line 65 "src/is.y"
                                         { yyval = yyvsp[0]; }
-#line 1521 "o/is.tab.c"
+#line 1524 "o/is.tab.c"
     break;
 
   case 9: /* signature: arguments  */
-#line 63 "src/is.y"
+#line 66 "src/is.y"
                                         { yyval = yyvsp[0]; }
-#line 1527 "o/is.tab.c"
+#line 1530 "o/is.tab.c"
     break;
 
   case 10: /* arguments: argument arguments  */
-#line 66 "src/is.y"
+#line 69 "src/is.y"
                                 { yyval = op_node(',', yyvsp[-1], NULL, yyvsp[0]); }
-#line 1533 "o/is.tab.c"
+#line 1536 "o/is.tab.c"
     break;
 
   case 11: /* arguments: argument  */
-#line 67 "src/is.y"
+#line 70 "src/is.y"
                                                         { yyval = yyvsp[0]; }
-#line 1539 "o/is.tab.c"
+#line 1542 "o/is.tab.c"
     break;
 
   case 12: /* argument: WORD A  */
-#line 70 "src/is.y"
+#line 73 "src/is.y"
                                         { yyval = op_node('\a', yyvsp[-1], NULL, yyvsp[0]); }
-#line 1545 "o/is.tab.c"
+#line 1548 "o/is.tab.c"
     break;
 
   case 13: /* argument: WORD '&' A  */
-#line 71 "src/is.y"
+#line 74 "src/is.y"
                                         { yyval = op_node('\b', yyvsp[-2], NULL, yyvsp[0]); }
-#line 1551 "o/is.tab.c"
+#line 1554 "o/is.tab.c"
     break;
 
   case 14: /* lines: lines '\n' lines  */
-#line 74 "src/is.y"
+#line 77 "src/is.y"
                                 { yyval = yyvsp[-2] && yyvsp[0]? op_node('\n', yyvsp[-2], NULL, yyvsp[0]):
 								yyvsp[-2]? u_node('\n', yyvsp[-2], NULL):
 								yyvsp[0]? u_node('\n', yyvsp[0], NULL):
 								yyvsp[-1];	}
-#line 1560 "o/is.tab.c"
+#line 1563 "o/is.tab.c"
     break;
 
   case 15: /* lines: IF exp THEN stmt  */
-#line 78 "src/is.y"
+#line 81 "src/is.y"
                                         { yyval = op_node(IF, yyvsp[-2], NULL, yyvsp[0]); }
-#line 1566 "o/is.tab.c"
+#line 1569 "o/is.tab.c"
     break;
 
   case 16: /* lines: FOR A '=' exp  */
-#line 79 "src/is.y"
+#line 82 "src/is.y"
                                         { yyval = op_node(FOR, yyvsp[-2], NULL, yyvsp[0]); }
-#line 1572 "o/is.tab.c"
+#line 1575 "o/is.tab.c"
     break;
 
   case 17: /* lines: NEXT next  */
-#line 80 "src/is.y"
+#line 83 "src/is.y"
                                         { yyval = u_node(NEXT, yyvsp[0], NULL); }
-#line 1578 "o/is.tab.c"
+#line 1581 "o/is.tab.c"
     break;
 
   case 18: /* lines: stmt  */
-#line 81 "src/is.y"
+#line 84 "src/is.y"
                                                 { yyval = yyvsp[0]; }
-#line 1584 "o/is.tab.c"
+#line 1587 "o/is.tab.c"
     break;
 
   case 19: /* lines: %empty  */
-#line 82 "src/is.y"
+#line 85 "src/is.y"
                                         { yyval = NULL; }
-#line 1590 "o/is.tab.c"
+#line 1593 "o/is.tab.c"
     break;
 
   case 20: /* next: next ',' next  */
-#line 85 "src/is.y"
+#line 88 "src/is.y"
                                 { yyval = op_node(',', yyvsp[-2], NULL, yyvsp[0]); }
-#line 1596 "o/is.tab.c"
+#line 1599 "o/is.tab.c"
     break;
 
   case 21: /* next: A  */
-#line 86 "src/is.y"
+#line 89 "src/is.y"
                                                 { yyval = yyvsp[0]; }
-#line 1602 "o/is.tab.c"
+#line 1605 "o/is.tab.c"
     break;
 
   case 22: /* stmt: stmt '|' stmt  */
-#line 90 "src/is.y"
-                                        { yyval = op_node(WORD, yyvsp[-2], "OR", yyvsp[0]); }
-#line 1608 "o/is.tab.c"
+#line 92 "src/is.y"
+                                { yyval = op_node(WORD, yyvsp[-2], "OR", yyvsp[0]); }
+#line 1611 "o/is.tab.c"
     break;
 
   case 23: /* stmt: stmt ':' stmt  */
-#line 91 "src/is.y"
+#line 93 "src/is.y"
                                         { yyval = op_node(':', yyvsp[-2], NULL, yyvsp[0]); }
-#line 1614 "o/is.tab.c"
+#line 1617 "o/is.tab.c"
     break;
 
   case 24: /* stmt: A '=' exp  */
-#line 92 "src/is.y"
+#line 94 "src/is.y"
                                                 { yyval = op_node('=', yyvsp[-2], NULL, yyvsp[0]); }
-#line 1620 "o/is.tab.c"
+#line 1623 "o/is.tab.c"
     break;
 
   case 25: /* stmt: WORD exp  */
-#line 93 "src/is.y"
+#line 95 "src/is.y"
                                                 { yyval = op_node('=', yyvsp[-1], NULL, yyvsp[0]); }
-#line 1626 "o/is.tab.c"
+#line 1629 "o/is.tab.c"
     break;
 
   case 26: /* exp: exp OR exp  */
-#line 96 "src/is.y"
+#line 98 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "or", yyvsp[0]); }
-#line 1632 "o/is.tab.c"
+#line 1635 "o/is.tab.c"
     break;
 
   case 27: /* exp: exp AND exp  */
-#line 97 "src/is.y"
+#line 99 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "and", yyvsp[0]); }
-#line 1638 "o/is.tab.c"
+#line 1641 "o/is.tab.c"
     break;
 
   case 28: /* exp: NOT exp  */
-#line 98 "src/is.y"
+#line 100 "src/is.y"
                                                 { yyval = u_node(U, yyvsp[0], "not"); }
-#line 1644 "o/is.tab.c"
+#line 1647 "o/is.tab.c"
     break;
 
   case 29: /* exp: exp '<' exp  */
-#line 100 "src/is.y"
+#line 102 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "less", yyvsp[0]); }
-#line 1650 "o/is.tab.c"
+#line 1653 "o/is.tab.c"
     break;
 
   case 30: /* exp: exp '>' exp  */
-#line 101 "src/is.y"
+#line 103 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "great", yyvsp[0]); }
-#line 1656 "o/is.tab.c"
+#line 1659 "o/is.tab.c"
     break;
 
   case 31: /* exp: exp '=' exp  */
-#line 102 "src/is.y"
+#line 104 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "equal", yyvsp[0]); }
-#line 1662 "o/is.tab.c"
+#line 1665 "o/is.tab.c"
     break;
 
   case 32: /* exp: exp AT_MOST exp  */
-#line 103 "src/is.y"
+#line 105 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "at_most", yyvsp[0]); }
-#line 1668 "o/is.tab.c"
+#line 1671 "o/is.tab.c"
     break;
 
   case 33: /* exp: exp AT_LEAST exp  */
-#line 104 "src/is.y"
+#line 106 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "at_least", yyvsp[0]); }
-#line 1674 "o/is.tab.c"
+#line 1677 "o/is.tab.c"
     break;
 
   case 34: /* exp: exp NE exp  */
-#line 105 "src/is.y"
+#line 107 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "not_equal", yyvsp[0]); }
-#line 1680 "o/is.tab.c"
+#line 1683 "o/is.tab.c"
     break;
 
   case 35: /* exp: exp WORD exp  */
-#line 108 "src/is.y"
+#line 110 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], yyvsp[-1]->text, yyvsp[0]); }
-#line 1686 "o/is.tab.c"
+#line 1689 "o/is.tab.c"
     break;
 
   case 36: /* exp: exp ',' exp  */
-#line 109 "src/is.y"
+#line 111 "src/is.y"
                                         { yyval = op_node(',', yyvsp[-2], NULL, yyvsp[0]); }
-#line 1692 "o/is.tab.c"
+#line 1695 "o/is.tab.c"
     break;
 
   case 37: /* exp: exp ';' exp  */
-#line 110 "src/is.y"
+#line 112 "src/is.y"
                                         { yyval = op_node(';', yyvsp[-2], NULL, yyvsp[0]); }
-#line 1698 "o/is.tab.c"
+#line 1701 "o/is.tab.c"
     break;
 
   case 38: /* exp: exp '+' exp  */
-#line 112 "src/is.y"
+#line 114 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "add", yyvsp[0]); }
-#line 1704 "o/is.tab.c"
+#line 1707 "o/is.tab.c"
     break;
 
   case 39: /* exp: exp '-' exp  */
-#line 113 "src/is.y"
+#line 115 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "sub", yyvsp[0]); }
-#line 1710 "o/is.tab.c"
+#line 1713 "o/is.tab.c"
     break;
 
   case 40: /* exp: exp '*' exp  */
-#line 114 "src/is.y"
+#line 116 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "mul", yyvsp[0]); }
-#line 1716 "o/is.tab.c"
+#line 1719 "o/is.tab.c"
     break;
 
   case 41: /* exp: exp '/' exp  */
-#line 115 "src/is.y"
+#line 117 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "div", yyvsp[0]); }
-#line 1722 "o/is.tab.c"
+#line 1725 "o/is.tab.c"
     break;
 
   case 42: /* exp: exp '^' exp  */
-#line 116 "src/is.y"
+#line 118 "src/is.y"
                                         { yyval = op_node(WORD, yyvsp[-2], "pow", yyvsp[0]); }
-#line 1728 "o/is.tab.c"
+#line 1731 "o/is.tab.c"
     break;
 
   case 43: /* exp: '-' exp  */
-#line 117 "src/is.y"
+#line 119 "src/is.y"
                                         { yyval = u_node(U, yyvsp[0], "neg"); }
-#line 1734 "o/is.tab.c"
+#line 1737 "o/is.tab.c"
     break;
 
   case 44: /* exp: exp '$'  */
-#line 118 "src/is.y"
+#line 120 "src/is.y"
                                                 { yyval = u_node(U, yyvsp[0], "asString"); }
-#line 1740 "o/is.tab.c"
+#line 1743 "o/is.tab.c"
     break;
 
   case 45: /* exp: exp '%'  */
-#line 119 "src/is.y"
+#line 121 "src/is.y"
                                                 { yyval = u_node(U, yyvsp[0], "asInteger"); }
-#line 1746 "o/is.tab.c"
+#line 1749 "o/is.tab.c"
     break;
 
   case 46: /* exp: exp '!'  */
-#line 120 "src/is.y"
+#line 122 "src/is.y"
                                                 { yyval = u_node(U, yyvsp[0], "asFloat"); }
-#line 1752 "o/is.tab.c"
+#line 1755 "o/is.tab.c"
     break;
 
   case 47: /* exp: exp '#'  */
-#line 121 "src/is.y"
+#line 123 "src/is.y"
                                                 { yyval = u_node(U, yyvsp[0], "asDouble"); }
-#line 1758 "o/is.tab.c"
+#line 1761 "o/is.tab.c"
     break;
 
   case 48: /* exp: exp WORD  */
-#line 122 "src/is.y"
+#line 124 "src/is.y"
                                          { yyval = u_node(U, yyvsp[-1], yyvsp[0]->text); }
-#line 1764 "o/is.tab.c"
+#line 1767 "o/is.tab.c"
     break;
 
   case 49: /* exp: '(' exp ')'  */
-#line 123 "src/is.y"
+#line 125 "src/is.y"
                                         { yyval = yyvsp[-1]; }
-#line 1770 "o/is.tab.c"
+#line 1773 "o/is.tab.c"
     break;
 
   case 50: /* exp: A  */
-#line 124 "src/is.y"
+#line 126 "src/is.y"
                                                 { yyval = yyvsp[0]; }
-#line 1776 "o/is.tab.c"
+#line 1779 "o/is.tab.c"
     break;
 
   case 51: /* exp: INT  */
-#line 125 "src/is.y"
+#line 127 "src/is.y"
                                                 { yyval = yyvsp[0]; }
-#line 1782 "o/is.tab.c"
+#line 1785 "o/is.tab.c"
     break;
 
   case 52: /* exp: NUM  */
-#line 126 "src/is.y"
+#line 128 "src/is.y"
                                                 { yyval = yyvsp[0]; }
-#line 1788 "o/is.tab.c"
+#line 1791 "o/is.tab.c"
     break;
 
   case 53: /* exp: STRING  */
-#line 127 "src/is.y"
+#line 129 "src/is.y"
                                                 { yyval = yyvsp[0]; }
-#line 1794 "o/is.tab.c"
+#line 1797 "o/is.tab.c"
     break;
 
 
-#line 1798 "o/is.tab.c"
+#line 1801 "o/is.tab.c"
 
       default: break;
     }
@@ -2019,5 +2022,46 @@ yyreturn:
   return yyresult;
 }
 
-#line 129 "src/is.y"
+#line 131 "src/is.y"
 
+
+extern char* yytext;
+extern int yylineno;
+extern int yycolumn;
+extern node* yyres;
+extern int yystartrule;
+extern FILE* yyin;
+
+int yywrap() {
+	return 1;
+}
+
+void yyerror(char const *s) {
+	fprintf(stderr, "%i:%i %s on `%s`\n", 
+		yylineno,
+		yycolumn,	// last_line last_column
+		s,
+		yytext);
+	exit(1);
+}
+
+node* yy_parse_method(FILE* f) {
+	yystartrule = METHOD;
+	yyin = f;
+	yyparse();
+	return yyres;
+}
+
+node* yy_parse_lines(FILE* f) {
+	yystartrule = LINES;
+	yyin = f;
+	yyparse();
+	return yyres;
+}
+
+node* parse_ext(FILE* f) {
+	yystartrule = EXP;
+	yyin = f;
+	yyparse();
+	return yyres;
+}

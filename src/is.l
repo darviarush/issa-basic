@@ -41,6 +41,8 @@ num		[0-9]+\.[0-9]+
 int 	[0-9]+
 string  \"([^\"]|\\\")*"\""
 
+%x LET
+
 %%
 
 							if(yystartrule) {
@@ -49,7 +51,11 @@ string  \"([^\"]|\\\")*"\""
 								return yystartrule_prev;
 							}
 
-[a-zA-Z][a-zA-Z_0-9]*		{
+<INITIAL>[ \t]+					yycolumn += yyleng;
+<INITIAL>(#.*)?\n				{ new_yylval('\n'); yycolumn = 1; return '\n'; }
+<INITIAL>.						BEGIN(LET); yyless(0);
+
+<LET>[a-zA-Z][a-zA-Z_0-9]*		{
 								if(yyleng == 1) return new_yylval(A);
 
 								yycolumn += yyleng;
@@ -68,17 +74,20 @@ string  \"([^\"]|\\\")*"\""
 								yycolumn -= yyleng;
 								return new_yylval(WORD);
 							}
-{string}		return new_yylval(STRING);
-{num}			return new_yylval(NUM);
-{int}			return new_yylval(INT);
 
-"<="			yycolumn += yyleng; return AT_MOST;
-"=>"			yycolumn += yyleng; return AT_LEAST;
-"<>"			yycolumn += yyleng; return NE;
-{op}			yycolumn += yyleng; return *yytext;
+<LET>([ \t]+#.*)?\n		{ new_yylval('\n'); yycolumn = 1; BEGIN(INITIAL); return '\n'; }
 
-[ \t]+			yycolumn += yyleng;
-\n				{ new_yylval('\n'); yycolumn = 1; return '\n'; }
-.				fprintf(stderr, "%i:%i Undefined simbol `%s`\n", yylineno, yycolumn, yytext); exit(10);
-<<EOF>>			return 0;
+<LET>[ \t]+			yycolumn += yyleng;
+<LET>{string}		return new_yylval(STRING);
+<LET>{num}			return new_yylval(NUM);
+<LET>{int}			return new_yylval(INT);
+
+<LET>"<="			yycolumn += yyleng; return AT_MOST;
+<LET>"=>"			yycolumn += yyleng; return AT_LEAST;
+<LET>"<>"			yycolumn += yyleng; return NE;
+<LET>{op}			yycolumn += yyleng; return *yytext;
+
+<LET>.				fprintf(stderr, "%i:%i Undefined simbol `%s`\n", yylineno, yycolumn, yytext); exit(10);
+
+<*><<EOF>>			return 0;
 %%

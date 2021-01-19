@@ -22,4 +22,10 @@ node* new_node(node* from);
 node* op_node(int op, node* op1, char* text, node* op2);
 node* u_node(int op, node* op1, char* text);
 
+// ----
+#define msg(FMT, ARGS...)		fprintf(stderr, FMT "\n", ##ARGS)
+#define mse(FMT, ARGS...)		fprintf(stderr, FMT "\n", ##ARGS), exit(1)
+
+#define asp(FMT, ARGS...)		({char* s; asprintf(&s, FMT, ##ARGS); s; })
+
 #endif
