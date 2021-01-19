@@ -69,8 +69,7 @@ lines:	lines '\n' lines
 next:	next ',' next
 		| A
 
-stmt:	
-		stmt '|' stmt
+stmt:	stmt '|' stmt
 		| stmt ':' stmt
 		| A '=' exp
 		| WORD exp
