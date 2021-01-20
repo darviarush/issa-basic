@@ -17,8 +17,8 @@
 /*** Возвращаемое функцией генерации значение ***/
 
 struct RETURN_CONTEXT {
-	char* class;
-	char* text;
+	char* class;			// возвращаемый функцией класс
+	char* text;				// 
 };
 
 
