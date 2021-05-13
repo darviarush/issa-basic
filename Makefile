@@ -1,13 +1,16 @@
+.PHONY: all
 
-all: test
-
-test: lib/issa-basic.js
-	node bin/issa-basic.js TestIssa 
+objects := $(patsubst coffee/%.coffee,js/%.js,$(wildcard coffee/*.coffee))
 
 
 
-lib/issa-basic.js: lib/issa-basic.coffee
-	yarn run coffee -bc $^
+all: $(objects)
+	node js/iss.js
+
+
+js/%.js: coffee/%.coffee
+	yarn run coffee -b -c -o $@ $^
+
 
 clean:
-	rm lib/issa-basic.js
+	rm js/*.js

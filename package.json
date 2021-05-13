@@ -3,5 +3,10 @@
   "scripts": {},
   "devDependencies": {
     "coffeescript": "^2.5.1"
+  },
+  "dependencies": {
+    "cson": "^7.20.0",
+    "dumper": "^1.0.12",
+    "express": "^4.17.1"
   }
 }

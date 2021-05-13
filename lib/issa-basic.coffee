@@ -1,10 +1,4 @@
-fs = require 'fs'
-util = require 'util'
-
-fsAccess = util.promisify(fs.access)
-fsReadFile = util.promisify(fs.readFile)
-fsWriteFile = util.promisify(fs.writeFile)
-fsMkdir = util.promisify(fs.mkdir)
+fs = require("fs").promises
 
 class File
 	constructor: (@path) ->
