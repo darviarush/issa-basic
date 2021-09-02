@@ -1,38 +1,33 @@
-.PHONY: all
+.PHONY: start clean install s
 
-BFLAGS = -Wcounterexamples -Wdangling-alias -r all 
+OBJECTS = $(patsubst src/%.c,o/%.o,$(wildcard src/*.c))
+CLIBS = -lX11 -lxkbcommon -lXtst
+CFLAGS = -Wall -Wextra -Werror -fmax-errors=1 -O4
 
-objects := $(patsubst src/%.c,o/%.o,$(wildcard src/*.c))
+start: erswitcher
+	./erswitcher
 
-
-all: is
-	#./is < one-page-example.is
-	#strace ./is bin/test-issa TestIssa
-	./is bin/test-issa TestIssa
-
-is: o/is.l.o o/is.y.o $(objects)
-	gcc -o $@ $^
-
-o/is.tab.c o/is.tab.h: src/is.y src/node.h
-	bison $(BFLAGS) src/is.y -o o/is.tab.c --defines=o/is.tab.h
-
-o/is.y.o: o/is.tab.c
-	gcc -o o/is.y.o -c o/is.tab.c
-
-o/lex.yy.c: src/is.l o/is.tab.h src/node.h
-	flex -o o/lex.yy.c src/is.l
-
-o/is.l.o: o/lex.yy.c
-	gcc -c o/lex.yy.c -o o/is.l.o
+o/:
+	mkdir o/
 
 o/%.o: src/%.c src/%.h
-	gcc -o $@ -c $<
+	gcc $(CFLAGS) -c $< -o $@
 
-o/%.o: src/%.c
-	gcc -o $@ -c $<
-
-re: clean all
+erswitcher:	o/ $(OBJECTS)
+	gcc $(CLIBS) -o erswitcher $(OBJECTS)
 
 clean:
-	rm -f o/* is
+	rm -fr erswitcher o/
 
+install:
+	mkdir -p ~/.local/bin
+	cp erswitcher ~/.local/bin
+	if [ ! -e ~/.xinitrc ]; then cp /etc/X11/xinit/xinitrc ~/.xinitrc; fi
+	grep "exec ~/.local/bin/erswitcher &" ~/.xinitrc > /dev/null || echo "exec ~/.local/bin/erswitcher &" >> ~/.xinitrc
+
+
+ers: erswitcher.c
+	gcc $(CFLAGS) $(CLIBS) -o ers erswitcher.c
+
+s: ers
+	./ers

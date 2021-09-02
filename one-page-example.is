@@ -1,0 +1,30 @@
+Number
+
+value Int = 0 # трали-вали-фестивали
+
+!!
+@math
+!!
+x square
+^Number(value=x value ^ 2)
+^{value: x value ^ 2} Number
+^{value: x value ^ 2} as Number
+!!
+x cube
+^Number new {x square value * x}
+!!@test
+!!
+x test
+
+[ "square(3)="; 3 square, "and cube(-2.2)="; -2 cube ] print
+!!
+x!
+
+#1 to 10 step -1 -> i do (
+#	i match (
+#	  0,1 then
+#	  else
+#   )
+#)
+
+#print "Factorial(10) = "; i
